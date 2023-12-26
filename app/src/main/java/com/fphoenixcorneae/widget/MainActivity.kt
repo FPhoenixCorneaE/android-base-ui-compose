@@ -40,6 +40,17 @@ class MainActivity : ComponentActivity() {
                                 Log.d("CustomWidget", "Switch: $checked")
                             }
                         }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = "Triangle：")
+                            Triangle(width = 30.dp, height = 20.dp, color = Color.Blue, cornerRadius = 20f)
+                            Triangle(
+                                width = 30.dp,
+                                height = 20.dp,
+                                color = Color.Red,
+                                cornerRadius = 20f,
+                                rotateDegree = 180f
+                            )
+                        }
                     }
                 }
             }

@@ -33,6 +33,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
+/**
+ * iOS 效果的 Switch
+ */
 @OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable
