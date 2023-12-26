@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -54,6 +55,10 @@ class MainActivity : ComponentActivity() {
                                 cornerRadius = 20f,
                                 rotateDegree = 180f
                             )
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.height(30.dp)) {
+                            Text(text = "VerticalDivider：")
+                            VerticalDivider(thickness = 2.dp, color = Color.Red)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(text = "TypewriterText：")
