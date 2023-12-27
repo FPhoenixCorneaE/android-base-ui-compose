@@ -23,6 +23,7 @@ dependencies {
 ### 更新日志
 
 #### 2023-12-27 
+* 添加自定义系统ui脚手架，适配状态栏、底部导航栏[SystemUiScaffold](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/SystemUiScaffold.kt)
 * 添加自定义选项卡[TabRow](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/TabRow.kt)
 
 #### 2023-12-26 
