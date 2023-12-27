@@ -4,15 +4,19 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -31,12 +35,14 @@ import androidx.compose.ui.unit.sp
 import com.fphoenixcorneae.widget.ui.theme.ComposeCustomWidgetTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeCustomWidgetTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                    val pagerState = rememberPagerState(initialPage = 1)
                     Column(
                         modifier = Modifier
                             .padding(20.dp)
@@ -44,6 +50,31 @@ class MainActivity : ComponentActivity() {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
+                        Column {
+                            val tabs = listOf("发现", "推荐", "关注")
+                            TabRow(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(30.dp)
+                                    .background(Color.White),
+                                tabs = tabs,
+                                pagerState = pagerState,
+                                containerColor = Color(0xFFFAFAFA),
+                                contentColor = Color(0xFF888888),
+                                selectedContentColor = Color(0xFF444444),
+                                dividerColor = Color(0xFFCCCCCC),
+                            )
+                            HorizontalPager(pageCount = tabs.size, state = pagerState) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(60.dp),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    Text(text = tabs[it])
+                                }
+                            }
+                        }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(text = "Switch：")
                             Switch(
