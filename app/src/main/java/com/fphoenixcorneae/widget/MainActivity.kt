@@ -43,6 +43,7 @@ class MainActivity : ComponentActivity() {
                 SystemUiScaffold {
                     // A surface container using the 'background' color from the theme
                     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+//                        RandomlyRollBallLayout()
                         val pagerState = rememberPagerState(initialPage = 1)
                         Column(
                             modifier = Modifier
