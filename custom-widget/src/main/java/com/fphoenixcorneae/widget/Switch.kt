@@ -96,10 +96,18 @@ fun Switch(
         val swipeOffset = swipeableState.offset.value
         // Track 缩放大小更新
         trackScale.value = 1f - ((swipeOffset - startAnchor) / endAnchor).run { if (this < 0) 0f else this }
-        // 更新选中状态
-        isChecked = swipeOffset >= endAnchor
-        // 回调状态
-        onCheckedChanged(isChecked)
+        // 更新状态
+        val stateChecked = swipeOffset >= endAnchor
+        val stateUnchecked = swipeOffset <= startAnchor
+        if (stateChecked && !isChecked) {
+            isChecked = true
+            // 回调状态
+            onCheckedChanged(true)
+        } else if (stateUnchecked && isChecked) {
+            isChecked = false
+            // 回调状态
+            onCheckedChanged(false)
+        }
     }
     Canvas(
         modifier = Modifier
