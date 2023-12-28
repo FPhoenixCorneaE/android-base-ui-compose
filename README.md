@@ -23,6 +23,9 @@ dependencies {
 ### 更新日志
 
 #### 2023-12-28 
+* 添加自定义五角星[Star](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/Star.kt)
+<br>
+致谢：[Android 自定义View 绘制五角星](https://www.jianshu.com/p/24efb605098b)
 * 添加自定义红心[Heart](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/Heart.kt)
 * 添加自定义跑马灯光圈[MarqueeAperture](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/MarqueeAperture.kt)
 <br>

@@ -58,6 +58,17 @@ class MainActivity : ComponentActivity() {
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center
                             ) {
+                                Text(text = "Star：")
+                                Star(color = Color.Red)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Star(color = Color.Magenta)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Star(color = Color.Red, isFill = false)
+                            }
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
                                 Text(text = "Heart：")
                                 Heart()
                                 Spacer(modifier = Modifier.width(8.dp))

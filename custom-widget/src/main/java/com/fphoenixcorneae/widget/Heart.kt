@@ -59,6 +59,7 @@ fun Heart(
                     }
                 },
                 paint = Paint().apply {
+                    isAntiAlias = true
                     this.color = color
                     if (isFill) {
                         style = PaintingStyle.Fill
@@ -66,7 +67,7 @@ fun Heart(
                         style = PaintingStyle.Stroke
                         strokeWidth = 2f
                     }
-                }
+                },
             )
         }
     }
