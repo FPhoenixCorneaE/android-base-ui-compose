@@ -4,6 +4,7 @@ import android.graphics.PointF
 import android.view.MotionEvent
 import androidx.annotation.FloatRange
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.currentRecomposeScope
 import androidx.compose.runtime.getValue
@@ -17,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import java.lang.Float.max
@@ -99,9 +101,10 @@ fun PointF.angle(endP: PointF): Float {
  * @param radius 连接半径
  */
 @OptIn(ExperimentalComposeUiApi::class)
+@Preview
 @Composable
 fun RandomlyRollBallLayout(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.fillMaxSize(),
     count: Int = 120,
     radius: Dp = 100.dp,
 ) {
@@ -114,39 +117,43 @@ fun RandomlyRollBallLayout(
         )
     }
     val requestDisallowInterceptTouchEvent = RequestDisallowInterceptTouchEvent()
-    Canvas(modifier = modifier.pointerInteropFilter(
-        requestDisallowInterceptTouchEvent = requestDisallowInterceptTouchEvent
-    ) { event ->
-        val x = event.x
-        val y = event.y
-        when (event.action) {
-            MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
-                requestDisallowInterceptTouchEvent.invoke(true)
-                movePointF.x = x
-                movePointF.y = y
-                val a = PointF(x, y)
-                speeds.forEach {
-                    val b = PointF(it.x, it.y)
-                    if (a.contains(b, density.run { radius.toPx() })) {
-                        if (it.angle == 0f) {
-                            it.angle = a.angle(b)
+    Canvas(
+        modifier = modifier.pointerInteropFilter(
+            requestDisallowInterceptTouchEvent = requestDisallowInterceptTouchEvent
+        ) { event ->
+            val x = event.x
+            val y = event.y
+            when (event.action) {
+                MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
+                    requestDisallowInterceptTouchEvent.invoke(true)
+                    movePointF.x = x
+                    movePointF.y = y
+                    val a = PointF(x, y)
+                    speeds.forEach {
+                        val b = PointF(it.x, it.y)
+                        if (a.contains(b, density.run { radius.toPx() })) {
+                            if (it.angle == 0f) {
+                                it.angle = a.angle(b)
+                            }
+                            it.x =
+                                (x + density.run { radius.toPx() } * cos(Math.toRadians(it.angle.toDouble()))).toFloat()
+                            it.x =
+                                (x + density.run { radius.toPx() } * sin(Math.toRadians(it.angle.toDouble()))).toFloat()
                         }
-                        it.x = (x + density.run { radius.toPx() } * cos(Math.toRadians(it.angle.toDouble()))).toFloat()
-                        it.x = (x + density.run { radius.toPx() } * sin(Math.toRadians(it.angle.toDouble()))).toFloat()
                     }
                 }
-            }
 
-            MotionEvent.ACTION_UP -> {
-                movePointF.x = -density.run { radius.toPx() }
-                movePointF.y = -density.run { radius.toPx() }
-                speeds.forEach { it.angle = 0f }
-            }
+                MotionEvent.ACTION_UP -> {
+                    movePointF.x = -density.run { radius.toPx() }
+                    movePointF.y = -density.run { radius.toPx() }
+                    speeds.forEach { it.angle = 0f }
+                }
 
-            else -> {}
-        }
-        return@pointerInteropFilter true
-    }) {
+                else -> {}
+            }
+            return@pointerInteropFilter true
+        },
+    ) {
         if (speeds.isEmpty()) {
             repeat((0..count).count()) {
                 speeds.add(

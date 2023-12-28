@@ -10,10 +10,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -52,7 +54,22 @@ class MainActivity : ComponentActivity() {
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            Column {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(text = "MarqueeAperture：")
+                                MarqueeAperture(modifier = Modifier.size(60.dp), radius = 8.dp)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                MarqueeAperture(modifier = Modifier.size(60.dp), radius = 30.dp, color2Stops = null)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                MarqueeAperture(
+                                    modifier = Modifier
+                                        .width(80.dp)
+                                        .height(60.dp),
+                                    radius = 0.dp,
+                                    color1Stops = null
+                                )
+                            }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(text = "TabRow：")
                                 val tabs = listOf("发现", "推荐", "关注")
                                 TabRow(
                                     modifier = Modifier
