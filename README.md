@@ -23,6 +23,7 @@ dependencies {
 ### 更新日志
 
 #### 2023-12-28 
+* 添加自定义红心[Heart](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/Heart.kt)
 * 添加自定义跑马灯光圈[MarqueeAperture](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/MarqueeAperture.kt)
 <br>
 致谢：[android 自定义view 跑马灯-光圈效果](https://juejin.cn/post/7171030095866363934)

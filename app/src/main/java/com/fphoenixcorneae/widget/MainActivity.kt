@@ -54,6 +54,17 @@ class MainActivity : ComponentActivity() {
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Text(text = "Heart：")
+                                Heart()
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Heart(color = Color.Magenta)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Heart(isFill = false)
+                            }
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(text = "MarqueeAperture：")
                                 MarqueeAperture(modifier = Modifier.size(60.dp), radius = 8.dp)
