@@ -1,8 +1,11 @@
 package com.fphoenixcorneae.widget
 
 import android.graphics.PointF
-import androidx.compose.foundation.Canvas
+import androidx.annotation.FloatRange
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
@@ -10,14 +13,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.PaintingStyle
+import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import kotlin.math.cos
 import kotlin.math.sin
@@ -29,65 +35,74 @@ import kotlin.math.sin
 @Composable
 fun Star(
     modifier: Modifier = Modifier,
-    size: Dp = 24.dp,
-    color: Color = Color.Yellow,
-    isFill: Boolean = true,
+    starSize: Dp = 24.dp,
+    borderWidth: Dp = 0.dp,
+    borderColor: Color = Color.Transparent,
+    backgroundColor: Color = Color.Transparent,
+    filledColor: Color = Color.Red,
+    @FloatRange(from = 0.0, to = 1.0) filledFraction: Float = 1f,
 ) {
-    // 计算平均角度, 72°
-    val averageAngle = 360f / 5
-    // 计算大圆的外角的角度, 90°-72°=18°
-    val outerCircleAngle = 90 - averageAngle
-    // 计算出小圆内角的角度, 72°÷2+18°=54°
-    val innerCircleAngle = averageAngle / 2 + outerCircleAngle
-    // 创建2个点
-    val outerPoint = PointF()
-    val innerPoint = PointF()
-    val path = Path()
-    Canvas(modifier = modifier.size(size)) {
-        translate(left = center.x, top = center.y) {
-            drawIntoCanvas {
-                val outerR = this.size.width / 2
+    Box(
+        modifier = modifier
+            .size(size = starSize)
+            .clip(StarShape)
+            .background(color = backgroundColor)
+            .border(width = borderWidth, color = borderColor, shape = StarShape)
+            .drawWithContent {
+                drawContent()
+                drawRect(color = filledColor, size = size.copy(size.width * filledFraction))
+            },
+    )
+}
+
+val StarShape = object : Shape {
+    override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
+        return Outline.Generic(
+            path = Path().apply {
+                // 外圆半径
+                val outerR = size.minDimension / 2
+                // 内圆半径
                 val innerR = outerR / 2
-                path.reset()
+                // 中心坐标
+                val centerX = size.width / 2
+                val centerY = size.height / 2
+
+                // 计算平均角度, 72°
+                val averageAngle = 360f / 5
+                // 计算大圆的外角的角度, 90°-72°=18°
+                val outerCircleAngle = 90 - averageAngle
+                // 计算出小圆内角的角度, 72°÷2+18°=54°
+                val innerCircleAngle = averageAngle / 2 + outerCircleAngle
+                // 创建2个点
+                val outerPoint = PointF()
+                val innerPoint = PointF()
+
                 (0 until 5).forEach {
                     // 计算大圆上的点坐标，从右上角开始，逆时针连接
                     // x = Math.cos((18° + 72° * i) / 180f * Math.PI) * 大圆半径
                     // y = -Math.sin((18° + 72° * i) / 180f * Math.PI) * 大圆半径
                     outerPoint.x =
-                        (cos(Math.toRadians((outerCircleAngle + it * averageAngle).toDouble())) * outerR).toFloat()
+                        centerX + (cos(Math.toRadians((outerCircleAngle + it * averageAngle).toDouble())) * outerR).toFloat()
                     outerPoint.y =
-                        (-sin(Math.toRadians((outerCircleAngle + it * averageAngle).toDouble())) * outerR).toFloat()
+                        centerY + (-sin(Math.toRadians((outerCircleAngle + it * averageAngle).toDouble())) * outerR).toFloat()
                     // 计算小圆上的点坐标
                     // x = Math.cos((54° + 72° * i) / 180f * Math.PI) * 小圆半径
                     // y = -Math.sin((54° + 72° * i) / 180f * Math.PI) * 小圆半径
                     innerPoint.x =
-                        (cos(Math.toRadians((innerCircleAngle + it * averageAngle).toDouble())) * innerR).toFloat()
+                        centerX + (cos(Math.toRadians((innerCircleAngle + it * averageAngle).toDouble())) * innerR).toFloat()
                     innerPoint.y =
-                        (-sin(Math.toRadians((innerCircleAngle + it * averageAngle).toDouble())) * innerR).toFloat()
+                        centerY + (-sin(Math.toRadians((innerCircleAngle + it * averageAngle).toDouble())) * innerR).toFloat()
                     // 先移动到第一个大圆上的点
                     if (it == 0) {
-                        path.moveTo(x = outerPoint.x, y = outerPoint.y)
+                        moveTo(x = outerPoint.x, y = outerPoint.y)
                     }
                     // 坐标连接，先大圆角上的点，再到小圆角上的点
-                    path.lineTo(x = outerPoint.x, y = outerPoint.y)
-                    path.lineTo(x = innerPoint.x, y = innerPoint.y)
+                    lineTo(x = outerPoint.x, y = outerPoint.y)
+                    lineTo(x = innerPoint.x, y = innerPoint.y)
                 }
-                path.close()
-                it.drawPath(
-                    path = path,
-                    paint = Paint().apply {
-                        isAntiAlias = true
-                        this.color = color
-                        if (isFill) {
-                            style = PaintingStyle.Fill
-                        } else {
-                            style = PaintingStyle.Stroke
-                            strokeWidth = 2f
-                        }
-                    },
-                )
-            }
-        }
+                close()
+            },
+        )
     }
 }
 
@@ -97,8 +112,8 @@ fun PreviewStar() {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
         Star()
         Spacer(modifier = Modifier.width(8.dp))
-        Star(color = Color.Magenta)
+        Star(borderWidth = 1.dp, borderColor = Color.Magenta, filledColor = Color.Gray)
         Spacer(modifier = Modifier.width(8.dp))
-        Star(isFill = false)
+        Star(backgroundColor = Color.Gray, filledFraction = 0.5f)
     }
 }

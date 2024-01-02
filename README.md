@@ -22,14 +22,16 @@ dependencies {
 
 ### 更新日志
 
+#### 2024-01-02 
+* 添加自定义评分组件[RatingBar](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/RatingBar.kt)
+* 五角星以Shape的形式剪切展现
+
 #### 2023-12-28 
 * 添加自定义五角星[Star](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/Star.kt)
-<br>
-致谢：[Android 自定义View 绘制五角星](https://www.jianshu.com/p/24efb605098b)
+  致谢：[Android 自定义View 绘制五角星](https://www.jianshu.com/p/24efb605098b)
 * 添加自定义红心[Heart](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/Heart.kt)
 * 添加自定义跑马灯光圈[MarqueeAperture](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/MarqueeAperture.kt)
-<br>
-致谢：[android 自定义view 跑马灯-光圈效果](https://juejin.cn/post/7171030095866363934)
+  致谢：[android 自定义view 跑马灯-光圈效果](https://juejin.cn/post/7171030095866363934)
 
 #### 2023-12-27 
 * 添加自定义随机滚动小球布局[RandomlyRollBallLayout](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/RandomlyRollBallLayout.kt)
@@ -43,5 +45,4 @@ dependencies {
 * 添加自定义打字机效果Text[TypewriterText](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/TypewriterText.kt)
 * 添加自定义三角形[Triangle](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/Triangle.kt)
 * 添加自定义开关[Switch](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/Switch.kt)
-<br>
-致谢：[Compose制作一个“IOS”效果的SwitchButton](https://juejin.cn/post/7134702107742961701)
+  致谢：[Compose制作一个“IOS”效果的SwitchButton](https://juejin.cn/post/7134702107742961701)

@@ -46,7 +46,6 @@ class MainActivity : ComponentActivity() {
                     // A surface container using the 'background' color from the theme
                     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
 //                        RandomlyRollBallLayout()
-                        val pagerState = rememberPagerState(initialPage = 1)
                         Column(
                             modifier = Modifier
                                 .padding(20.dp)
@@ -58,12 +57,21 @@ class MainActivity : ComponentActivity() {
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center
                             ) {
+                                Text(text = "RatingBar：")
+                                RatingBar(touchEnable = true) {
+                                    Log.d("CustomWidget", "RatingBar: $it")
+                                }
+                            }
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
                                 Text(text = "Star：")
-                                Star(color = Color.Red)
+                                Star()
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Star(color = Color.Magenta)
+                                Star(borderWidth = 1.dp, borderColor = Color.Magenta, filledColor = Color.Gray)
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Star(color = Color.Red, isFill = false)
+                                Star(backgroundColor = Color.Gray, filledFraction = 0.5f)
                             }
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
@@ -91,6 +99,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                val pagerState = rememberPagerState(initialPage = 1)
                                 Text(text = "TabRow：")
                                 val tabs = listOf("发现", "推荐", "关注")
                                 TabRow(
