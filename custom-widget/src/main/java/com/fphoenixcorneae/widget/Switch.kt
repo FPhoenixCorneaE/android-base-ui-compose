@@ -54,7 +54,7 @@ fun Switch(
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
     // 滑动状态
-    val swipeableState = rememberSwipeableState(initialValue = 0, animationSpec = tween())
+    val swipeableState = rememberSwipeableState(initialValue = if (checked) 1 else 0, animationSpec = tween())
     // 是否选中状态
     var isChecked by remember { mutableStateOf(checked) }
     // Thumb 半径大小
