@@ -1,5 +1,6 @@
 package com.fphoenixcorneae.widget
 
+import android.graphics.BlurMaskFilter
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -53,6 +54,38 @@ class MainActivity : ComponentActivity() {
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Text(text = "GlowCircle：")
+                                GlowCircle(
+                                    modifier = Modifier
+                                        .size(60.dp)
+                                        .background(Color.Black),
+                                    blurStyle = BlurMaskFilter.Blur.NORMAL,
+                                )
+                                GlowCircle(
+                                    modifier = Modifier
+                                        .size(60.dp)
+                                        .background(Color.Black),
+                                    glowColor = Color.Magenta,
+                                    blurStyle = BlurMaskFilter.Blur.SOLID,
+                                )
+                                GlowCircle(
+                                    modifier = Modifier
+                                        .size(60.dp)
+                                        .background(Color.Black),
+                                    blurStyle = BlurMaskFilter.Blur.INNER,
+                                )
+                                GlowCircle(
+                                    modifier = Modifier
+                                        .size(60.dp)
+                                        .background(Color.Black),
+                                    glowColor = Color.Magenta,
+                                    blurStyle = BlurMaskFilter.Blur.OUTER,
+                                )
+                            }
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center

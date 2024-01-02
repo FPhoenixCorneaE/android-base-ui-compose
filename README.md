@@ -23,6 +23,7 @@ dependencies {
 ### 更新日志
 
 #### 2024-01-02 
+* 添加自定义辉光呼吸圆圈[GlowCircle](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/GlowCircle.kt)
 * 添加自定义评分组件[RatingBar](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/RatingBar.kt)
 * 五角星以Shape的形式剪切展现
 
