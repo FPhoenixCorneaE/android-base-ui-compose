@@ -45,6 +45,7 @@ import kotlinx.coroutines.launch
 fun Switch(
     modifier: Modifier = Modifier,
     checked: Boolean = false,
+    enabled: Boolean = true,
     width: Dp = 48.dp,
     height: Dp = 24.dp,
     edgeGap: Dp = 2.dp,
@@ -62,7 +63,7 @@ fun Switch(
         animationSpec = tween(),
     )
     // 是否选中状态
-    var isChecked by rememberSaveable(inputs = arrayOf(checked)) { mutableStateOf(checked) }
+    var isChecked by rememberSaveable { mutableStateOf(checked) }
     // Thumb 半径大小
     val thumbRadius = height / 2f - edgeGap
     // Track 的 scale 大小: [0, 1]
@@ -104,7 +105,8 @@ fun Switch(
             .size(width = width, height = height)
             .swipeAdsorb(
                 anchors = anchors,
-                swipeableState = swipeableState
+                swipeableState = swipeableState,
+                enabled = enabled,
             ) {
                 // 点击
                 val targetValue =
@@ -140,9 +142,12 @@ fun Switch(
             onCheckedChanged(false)
         }
     }
-    LaunchedEffect(swipeableState) {
-        coroutineScope.launch {
-            swipeableState.animateTo(targetValue = if (checked) SwitchStatus.CLOSE else SwitchStatus.OPEN)
+    LaunchedEffect(key1 = checked) {
+        val targetValue = if (checked) SwitchStatus.OPEN else SwitchStatus.CLOSE
+        if (swipeableState.targetValue != targetValue) {
+            coroutineScope.launch {
+                swipeableState.animateTo(targetValue = targetValue)
+            }
         }
     }
 }
@@ -157,6 +162,7 @@ fun Switch(
 internal inline fun <T> Modifier.swipeAdsorb(
     anchors: Map<Float, T>,
     swipeableState: SwipeableState<T>,
+    enabled: Boolean = true,
     crossinline onClick: () -> Unit,
 ) = composed {
     then(
@@ -165,7 +171,9 @@ internal inline fun <T> Modifier.swipeAdsorb(
                 detectTapGestures(
                     onTap = {
                         // 点击回调
-                        onClick()
+                        if (enabled) {
+                            onClick()
+                        }
                     }
                 )
             }
@@ -178,6 +186,7 @@ internal inline fun <T> Modifier.swipeAdsorb(
                 },
                 // 水平方向
                 orientation = Orientation.Horizontal,
+                enabled = enabled,
             )
     )
 }

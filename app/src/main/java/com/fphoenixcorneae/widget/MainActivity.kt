@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-    val switchEnabled = MutableStateFlow(false)
+    private val switchEnabled = MutableStateFlow(false)
 
     @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -176,11 +176,18 @@ class MainActivity : ComponentActivity() {
                                     width = 40.dp,
                                     height = 20.dp,
                                 ) { checked ->
+                                    Log.d("CustomWidget", "Switch: $checked")
                                     coroutineScope.launch {
                                         switchEnabled.emit(checked)
                                     }
-                                    Log.d("CustomWidget", "Switch: $checked")
                                 }
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Switch(
+                                    checked = false,
+                                    enabled = false,
+                                    width = 40.dp,
+                                    height = 20.dp,
+                                )
                             }
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(text = "Triangle：")
@@ -233,7 +240,7 @@ class MainActivity : ComponentActivity() {
                             }
                         }
 
-                        LaunchedEffect(key1 = Unit){
+                        LaunchedEffect(key1 = Unit) {
                             coroutineScope.launch {
                                 delay(1000)
                                 switchEnabled.emit(true)
