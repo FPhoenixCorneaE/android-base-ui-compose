@@ -25,9 +25,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,8 +39,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fphoenixcorneae.widget.ui.theme.ComposeCustomWidgetTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+
+    val switchEnabled = MutableStateFlow(false)
+
     @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +55,7 @@ class MainActivity : ComponentActivity() {
                 SystemUiScaffold {
                     // A surface container using the 'background' color from the theme
                     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                        val coroutineScope = rememberCoroutineScope()
 //                        RandomlyRollBallLayout()
                         Column(
                             modifier = Modifier
@@ -158,13 +168,17 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             }
+                            val isChecked by switchEnabled.collectAsState()
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(text = "Switch：")
                                 Switch(
-                                    checked = true,
+                                    checked = isChecked,
                                     width = 40.dp,
                                     height = 20.dp,
                                 ) { checked ->
+                                    coroutineScope.launch {
+                                        switchEnabled.emit(checked)
+                                    }
                                     Log.d("CustomWidget", "Switch: $checked")
                                 }
                             }
@@ -216,6 +230,13 @@ class MainActivity : ComponentActivity() {
                                             "剑阁峥嵘而崔嵬（wéi），一夫当关，万夫莫开。所守或匪（fěi）亲，化为狼与豺。朝避猛虎，夕避长蛇；磨牙吮（shǔn）血（xuè），杀人如麻。锦城虽云乐，不如早还（huán）家。蜀道之难，难于上青天，侧身西望长咨嗟（zī jiē）！",
                                     typingInterval = 10,
                                 )
+                            }
+                        }
+
+                        LaunchedEffect(key1 = Unit){
+                            coroutineScope.launch {
+                                delay(1000)
+                                switchEnabled.emit(true)
                             }
                         }
                     }
