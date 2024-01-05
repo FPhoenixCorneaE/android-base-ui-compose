@@ -23,6 +23,9 @@ dependencies {
 ### 更新日志
 
 #### 2024-01-02 
+* feat: 添加自定义数字键盘之默认键盘[BasicNumberKeyboard](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/NumberKeyboard.kt)
+
+#### 2024-01-02 
 * feat: 添加自定义辉光呼吸圆圈[GlowCircle](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/GlowCircle.kt)
 * feat: 添加自定义评分组件[RatingBar](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/RatingBar.kt)
 * perf: 五角星以Shape的形式剪切展现

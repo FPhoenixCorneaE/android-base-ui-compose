@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.fphoenixcorneae.compose.clickableNoRipple
 import com.fphoenixcorneae.widget.ui.theme.ComposeCustomWidgetTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -64,6 +65,29 @@ class MainActivity : ComponentActivity() {
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                var visibleBasicNumberKeyboard by remember { mutableStateOf(false) }
+                                Text(
+                                    text = "弹出默认键盘",
+                                    modifier = Modifier.clickableNoRipple { visibleBasicNumberKeyboard = true })
+                                BasicNumberKeyboard(
+                                    modifier = Modifier.width(200.dp),
+                                    visible = visibleBasicNumberKeyboard
+                                ) { key, type ->
+                                    when (type) {
+                                        KeyboardKeyType.Number -> Log.d(
+                                            "CustomWidget",
+                                            "onCreate: BasicNumberKeyboard: $key"
+                                        )
+
+                                        KeyboardKeyType.Hide -> visibleBasicNumberKeyboard = false
+                                        KeyboardKeyType.Delete -> Log.d(
+                                            "CustomWidget",
+                                            "onCreate: BasicNumberKeyboard: $key"
+                                        )
+                                    }
+                                }
+                            }
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center
