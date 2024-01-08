@@ -67,24 +67,39 @@ class MainActivity : ComponentActivity() {
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 var visibleBasicNumberKeyboard by remember { mutableStateOf(false) }
+                                var visibleSidebarNumberKeyboard by remember { mutableStateOf(false) }
                                 Text(
                                     text = "弹出默认键盘",
-                                    modifier = Modifier.clickableNoRipple { visibleBasicNumberKeyboard = true })
+                                    modifier = Modifier.clickableNoRipple {
+                                        visibleBasicNumberKeyboard = true
+                                        visibleSidebarNumberKeyboard = false
+                                    },
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "弹出带右侧栏的键盘",
+                                    modifier = Modifier.clickableNoRipple {
+                                        visibleBasicNumberKeyboard = false
+                                        visibleSidebarNumberKeyboard = true
+                                    },
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
                                 BasicNumberKeyboard(
-                                    modifier = Modifier.width(200.dp),
+                                    modifier = Modifier.fillMaxWidth(),
                                     visible = visibleBasicNumberKeyboard
                                 ) { key, type ->
-                                    when (type) {
-                                        KeyboardKeyType.Number -> Log.d(
-                                            "CustomWidget",
-                                            "onCreate: BasicNumberKeyboard: $key"
-                                        )
-
-                                        KeyboardKeyType.Hide -> visibleBasicNumberKeyboard = false
-                                        KeyboardKeyType.Delete -> Log.d(
-                                            "CustomWidget",
-                                            "onCreate: BasicNumberKeyboard: $key"
-                                        )
+                                    Log.d("CustomWidget", "onCreate: BasicNumberKeyboard: $key")
+                                    if (type == KeyboardKeyType.Hide) {
+                                        visibleBasicNumberKeyboard = false
+                                    }
+                                }
+                                SidebarNumberKeyboard(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    visible = visibleSidebarNumberKeyboard
+                                ) { key, type ->
+                                    Log.d("CustomWidget", "onCreate: SidebarNumberKeyboard: $key")
+                                    if (type == KeyboardKeyType.Complete) {
+                                        visibleSidebarNumberKeyboard = false
                                     }
                                 }
                             }
