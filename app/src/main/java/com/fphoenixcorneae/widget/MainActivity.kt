@@ -68,11 +68,13 @@ class MainActivity : ComponentActivity() {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 var visibleBasicNumberKeyboard by remember { mutableStateOf(false) }
                                 var visibleSidebarNumberKeyboard by remember { mutableStateOf(false) }
+                                var visibleIdCardNumberKeyboard by remember { mutableStateOf(false) }
                                 Text(
                                     text = "弹出默认键盘",
                                     modifier = Modifier.clickableNoRipple {
                                         visibleBasicNumberKeyboard = true
                                         visibleSidebarNumberKeyboard = false
+                                        visibleIdCardNumberKeyboard = false
                                     },
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -81,6 +83,16 @@ class MainActivity : ComponentActivity() {
                                     modifier = Modifier.clickableNoRipple {
                                         visibleBasicNumberKeyboard = false
                                         visibleSidebarNumberKeyboard = true
+                                        visibleIdCardNumberKeyboard = false
+                                    },
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "弹出身份证号键盘",
+                                    modifier = Modifier.clickableNoRipple {
+                                        visibleBasicNumberKeyboard = false
+                                        visibleSidebarNumberKeyboard = false
+                                        visibleIdCardNumberKeyboard = true
                                     },
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -100,6 +112,15 @@ class MainActivity : ComponentActivity() {
                                     Log.d("CustomWidget", "onCreate: SidebarNumberKeyboard: $key")
                                     if (type == KeyboardKeyType.Complete) {
                                         visibleSidebarNumberKeyboard = false
+                                    }
+                                }
+                                IdCardNumberKeyboard(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    visible = visibleIdCardNumberKeyboard
+                                ) { key, type ->
+                                    Log.d("CustomWidget", "onCreate: IdCardNumberKeyboard: $key")
+                                    if (type == KeyboardKeyType.Complete) {
+                                        visibleIdCardNumberKeyboard = false
                                     }
                                 }
                             }
