@@ -69,12 +69,14 @@ class MainActivity : ComponentActivity() {
                                 var visibleBasicNumberKeyboard by remember { mutableStateOf(false) }
                                 var visibleSidebarNumberKeyboard by remember { mutableStateOf(false) }
                                 var visibleIdCardNumberKeyboard by remember { mutableStateOf(false) }
+                                var visibleTitleNumberKeyboard by remember { mutableStateOf(false) }
                                 Text(
                                     text = "弹出默认键盘",
                                     modifier = Modifier.clickableNoRipple {
                                         visibleBasicNumberKeyboard = true
                                         visibleSidebarNumberKeyboard = false
                                         visibleIdCardNumberKeyboard = false
+                                        visibleTitleNumberKeyboard = false
                                     },
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -84,6 +86,7 @@ class MainActivity : ComponentActivity() {
                                         visibleBasicNumberKeyboard = false
                                         visibleSidebarNumberKeyboard = true
                                         visibleIdCardNumberKeyboard = false
+                                        visibleTitleNumberKeyboard = false
                                     },
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -93,34 +96,54 @@ class MainActivity : ComponentActivity() {
                                         visibleBasicNumberKeyboard = false
                                         visibleSidebarNumberKeyboard = false
                                         visibleIdCardNumberKeyboard = true
+                                        visibleTitleNumberKeyboard = false
+                                    },
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "弹出带标题的键盘",
+                                    modifier = Modifier.clickableNoRipple {
+                                        visibleBasicNumberKeyboard = false
+                                        visibleSidebarNumberKeyboard = false
+                                        visibleIdCardNumberKeyboard = false
+                                        visibleTitleNumberKeyboard = true
                                     },
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
                                 BasicNumberKeyboard(
                                     modifier = Modifier.fillMaxWidth(),
                                     visible = visibleBasicNumberKeyboard
-                                ) { key, type ->
+                                ) { key ->
                                     Log.d("CustomWidget", "onCreate: BasicNumberKeyboard: $key")
-                                    if (type == KeyboardKeyType.Hide) {
+                                    if (key.second == KeyboardKeyType.Hide) {
                                         visibleBasicNumberKeyboard = false
                                     }
                                 }
                                 SidebarNumberKeyboard(
                                     modifier = Modifier.fillMaxWidth(),
                                     visible = visibleSidebarNumberKeyboard
-                                ) { key, type ->
+                                ) { key ->
                                     Log.d("CustomWidget", "onCreate: SidebarNumberKeyboard: $key")
-                                    if (type == KeyboardKeyType.Complete) {
+                                    if (key.second == KeyboardKeyType.Complete) {
                                         visibleSidebarNumberKeyboard = false
                                     }
                                 }
                                 IdCardNumberKeyboard(
                                     modifier = Modifier.fillMaxWidth(),
                                     visible = visibleIdCardNumberKeyboard
-                                ) { key, type ->
+                                ) { key ->
                                     Log.d("CustomWidget", "onCreate: IdCardNumberKeyboard: $key")
-                                    if (type == KeyboardKeyType.Complete) {
+                                    if (key.second == KeyboardKeyType.Complete) {
                                         visibleIdCardNumberKeyboard = false
+                                    }
+                                }
+                                TitleNumberKeyboard(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    visible = visibleTitleNumberKeyboard
+                                ) { key ->
+                                    Log.d("CustomWidget", "onCreate: TitleNumberKeyboard: $key")
+                                    if (key.second == KeyboardKeyType.Complete) {
+                                        visibleTitleNumberKeyboard = false
                                     }
                                 }
                             }

@@ -75,7 +75,7 @@ fun BasicNumberKeyboard(
     pressedColor: Color = Color(0xFFEBEDF0),
     painterHide: Painter = painterResource(id = R.drawable.ic_keyboard_hide),
     painterDelete: Painter = painterResource(id = R.drawable.ic_keyboard_delete),
-    onKeyClick: (@ParameterName("key") String, @ParameterName("type") KeyboardKeyType) -> Unit = { _, _ -> },
+    onKeyClick: (Pair<String, KeyboardKeyType>) -> Unit = { },
 ) {
     val keys = mutableListOf(
         "1" to KeyboardKeyType.Number,
@@ -130,7 +130,7 @@ fun BasicNumberKeyboard(
                                 awaitPointerEventScope {
                                     isPressed = if (isPressed) {
                                         waitForUpOrCancellation()
-                                        onKeyClick(key.first, key.second)
+                                        onKeyClick(key)
                                         false
                                     } else {
                                         awaitFirstDown(requireUnconsumed = false)
@@ -202,7 +202,7 @@ fun IdCardNumberKeyboard(
     completePressedColor: Color = Color(0xFF8593B2),
     completeFontSize: TextUnit = 16.sp,
     painterDelete: Painter = painterResource(id = R.drawable.ic_keyboard_delete),
-    onKeyClick: (@ParameterName("key") String, @ParameterName("type") KeyboardKeyType) -> Unit = { _, _ -> },
+    onKeyClick: (Pair<String, KeyboardKeyType>) -> Unit = { },
 ) {
     val keys = mutableListOf(
         "1" to KeyboardKeyType.Number,
@@ -247,7 +247,7 @@ fun IdCardNumberKeyboard(
                             awaitPointerEventScope {
                                 isCompletePressed = if (isCompletePressed) {
                                     waitForUpOrCancellation()
-                                    onKeyClick(keys.last().first, keys.last().second)
+                                    onKeyClick(keys.last())
                                     false
                                 } else {
                                     awaitFirstDown(requireUnconsumed = false)
@@ -281,7 +281,162 @@ fun IdCardNumberKeyboard(
                                     awaitPointerEventScope {
                                         isPressed = if (isPressed) {
                                             waitForUpOrCancellation()
-                                            onKeyClick(key.first, key.second)
+                                            onKeyClick(key)
+                                            false
+                                        } else {
+                                            awaitFirstDown(requireUnconsumed = false)
+                                            true
+                                        }
+                                    }
+                                },
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            when (key.second) {
+                                KeyboardKeyType.Delete -> {
+                                    Image(
+                                        painter = painterDelete,
+                                        contentDescription = key.first,
+                                        modifier = Modifier.size(keyWidth / 4)
+                                    )
+                                }
+
+                                else -> {
+                                    Text(
+                                        text = key.first,
+                                        color = fontColor,
+                                        fontSize = fontSize,
+                                        fontWeight = fontWeight,
+                                        fontFamily = fontFamily,
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 数字键盘之带标题的键盘
+ * @param visible         显示或隐藏
+ * @param horizontalSpace 水平间隙
+ * @param verticalSpace   垂直间隙
+ * @param aspectRatio     长宽比
+ */
+@Preview
+@Composable
+fun TitleNumberKeyboard(
+    modifier: Modifier = Modifier,
+    visible: Boolean = true,
+    backgroundColor: Color = Color(0xFFF2F3F5),
+    contentPadding: PaddingValues = PaddingValues(4.dp),
+    horizontalSpace: Dp = 4.dp,
+    verticalSpace: Dp = 4.dp,
+    aspectRatio: Float = 2.5f,
+    cornerRadius: Dp = 4.dp,
+    fontSize: TextUnit = 20.sp,
+    fontColor: Color = Color.Black,
+    fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
+    normalColor: Color = Color.White,
+    pressedColor: Color = Color(0xFFEBEDF0),
+    title: String = "键盘标题",
+    titleFontSize: TextUnit = 14.sp,
+    titleColor: Color = Color(0xFF646566),
+    completeNormalColor: Color = Color(0xFF576B95),
+    completePressedColor: Color = Color(0xFF8593B2),
+    completeFontSize: TextUnit = 16.sp,
+    painterDelete: Painter = painterResource(id = R.drawable.ic_keyboard_delete),
+    onKeyClick: (Pair<String, KeyboardKeyType>) -> Unit = { },
+) {
+    val keys = mutableListOf(
+        "1" to KeyboardKeyType.Number,
+        "2" to KeyboardKeyType.Number,
+        "3" to KeyboardKeyType.Number,
+        "4" to KeyboardKeyType.Number,
+        "5" to KeyboardKeyType.Number,
+        "6" to KeyboardKeyType.Number,
+        "7" to KeyboardKeyType.Number,
+        "8" to KeyboardKeyType.Number,
+        "9" to KeyboardKeyType.Number,
+        "." to KeyboardKeyType.DecimalPoint,
+        "0" to KeyboardKeyType.Number,
+        "Delete" to KeyboardKeyType.Delete,
+        "完成" to KeyboardKeyType.Complete,
+    )
+    AnimatedVisibility(
+        modifier = modifier,
+        visible = visible,
+        enter = slideInVertically(animationSpec = tween(), initialOffsetY = { it }),
+        exit = slideOutVertically(animationSpec = tween(), targetOffsetY = { it }),
+    ) {
+        BoxWithConstraints {
+            val startPadding = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
+            val topPadding = contentPadding.calculateTopPadding()
+            val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
+            val bottomPadding = contentPadding.calculateBottomPadding()
+            val keyWidth = (maxWidth - startPadding - endPadding - horizontalSpace * 2) / 3
+            val keyboardHeight = topPadding + bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
+            Column(modifier = Modifier.background(color = backgroundColor)) {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = title,
+                        color = titleColor,
+                        fontSize = titleFontSize,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                    var isCompletePressed by remember { mutableStateOf(false) }
+                    Text(
+                        text = keys.last().first,
+                        color = if (isCompletePressed) completePressedColor else completeNormalColor,
+                        fontSize = completeFontSize,
+                        fontWeight = fontWeight,
+                        fontFamily = fontFamily,
+                        modifier = Modifier
+                            .padding(top = topPadding, end = endPadding)
+                            .align(Alignment.TopEnd)
+                            .pointerInput(isCompletePressed) {
+                                awaitPointerEventScope {
+                                    isCompletePressed = if (isCompletePressed) {
+                                        waitForUpOrCancellation()
+                                        onKeyClick(keys.last())
+                                        false
+                                    } else {
+                                        awaitFirstDown(requireUnconsumed = false)
+                                        true
+                                    }
+                                }
+                            },
+                    )
+                }
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    modifier = Modifier
+                        .height(keyboardHeight),
+                    contentPadding = contentPadding,
+                    horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
+                    verticalArrangement = Arrangement.spacedBy(verticalSpace),
+                    userScrollEnabled = false,
+                ) {
+                    items(
+                        items = keys.subList(0, keys.size - 1),
+                        contentType = {
+                            it.second
+                        },
+                    ) { key ->
+                        var isPressed by remember { mutableStateOf(false) }
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(cornerRadius))
+                                .background(color = if (isPressed) pressedColor else normalColor)
+                                .aspectRatio(ratio = aspectRatio)
+                                .pointerInput(isPressed) {
+                                    awaitPointerEventScope {
+                                        isPressed = if (isPressed) {
+                                            waitForUpOrCancellation()
+                                            onKeyClick(key)
                                             false
                                         } else {
                                             awaitFirstDown(requireUnconsumed = false)
@@ -346,7 +501,7 @@ fun SidebarNumberKeyboard(
     completePressedColor: Color = Color(0xFF5AA8F8),
     completeFontSize: TextUnit = 16.sp,
     painterDelete: Painter = painterResource(id = R.drawable.ic_keyboard_delete),
-    onKeyClick: (@ParameterName("key") String, @ParameterName("type") KeyboardKeyType) -> Unit = { _, _ -> },
+    onKeyClick: (Pair<String, KeyboardKeyType>) -> Unit = { },
 ) {
     val keys = mutableListOf(
         "1" to KeyboardKeyType.Number,
@@ -422,7 +577,7 @@ fun SidebarNumberKeyboard(
                                     awaitPointerEventScope {
                                         isPressed = if (isPressed) {
                                             waitForUpOrCancellation()
-                                            onKeyClick(key.first, key.second)
+                                            onKeyClick(key)
                                             false
                                         } else {
                                             awaitFirstDown(requireUnconsumed = false)
@@ -462,7 +617,7 @@ fun SidebarNumberKeyboard(
                                     awaitPointerEventScope {
                                         isPressed = if (isPressed) {
                                             waitForUpOrCancellation()
-                                            onKeyClick(key.first, key.second)
+                                            onKeyClick(key)
                                             false
                                         } else {
                                             awaitFirstDown(requireUnconsumed = false)
