@@ -3,6 +3,7 @@ package com.fphoenixcorneae.widget
 import android.graphics.BlurMaskFilter
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -70,6 +71,7 @@ class MainActivity : ComponentActivity() {
                                 var visibleSidebarNumberKeyboard by remember { mutableStateOf(false) }
                                 var visibleIdCardNumberKeyboard by remember { mutableStateOf(false) }
                                 var visibleTitleNumberKeyboard by remember { mutableStateOf(false) }
+                                var visibleNumberKeyboardWithKeys by remember { mutableStateOf(false) }
                                 Text(
                                     text = "弹出默认键盘",
                                     modifier = Modifier.clickableNoRipple {
@@ -77,6 +79,7 @@ class MainActivity : ComponentActivity() {
                                         visibleSidebarNumberKeyboard = false
                                         visibleIdCardNumberKeyboard = false
                                         visibleTitleNumberKeyboard = false
+                                        visibleNumberKeyboardWithKeys = false
                                     },
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -87,6 +90,7 @@ class MainActivity : ComponentActivity() {
                                         visibleSidebarNumberKeyboard = true
                                         visibleIdCardNumberKeyboard = false
                                         visibleTitleNumberKeyboard = false
+                                        visibleNumberKeyboardWithKeys = false
                                     },
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -97,6 +101,7 @@ class MainActivity : ComponentActivity() {
                                         visibleSidebarNumberKeyboard = false
                                         visibleIdCardNumberKeyboard = true
                                         visibleTitleNumberKeyboard = false
+                                        visibleNumberKeyboardWithKeys = false
                                     },
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -107,6 +112,18 @@ class MainActivity : ComponentActivity() {
                                         visibleSidebarNumberKeyboard = false
                                         visibleIdCardNumberKeyboard = false
                                         visibleTitleNumberKeyboard = true
+                                        visibleNumberKeyboardWithKeys = false
+                                    },
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "弹出配置多个按键的键盘",
+                                    modifier = Modifier.clickableNoRipple {
+                                        visibleBasicNumberKeyboard = false
+                                        visibleSidebarNumberKeyboard = false
+                                        visibleIdCardNumberKeyboard = false
+                                        visibleTitleNumberKeyboard = false
+                                        visibleNumberKeyboardWithKeys = true
                                     },
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -114,7 +131,7 @@ class MainActivity : ComponentActivity() {
                                     modifier = Modifier.fillMaxWidth(),
                                     visible = visibleBasicNumberKeyboard
                                 ) { key ->
-                                    Log.d("CustomWidget", "onCreate: BasicNumberKeyboard: $key")
+                                    Toast.makeText(this@MainActivity, "$key", Toast.LENGTH_SHORT).show()
                                     if (key.second == KeyboardKeyType.Hide) {
                                         visibleBasicNumberKeyboard = false
                                     }
@@ -123,7 +140,7 @@ class MainActivity : ComponentActivity() {
                                     modifier = Modifier.fillMaxWidth(),
                                     visible = visibleSidebarNumberKeyboard
                                 ) { key ->
-                                    Log.d("CustomWidget", "onCreate: SidebarNumberKeyboard: $key")
+                                    Toast.makeText(this@MainActivity, "$key", Toast.LENGTH_SHORT).show()
                                     if (key.second == KeyboardKeyType.Complete) {
                                         visibleSidebarNumberKeyboard = false
                                     }
@@ -132,7 +149,7 @@ class MainActivity : ComponentActivity() {
                                     modifier = Modifier.fillMaxWidth(),
                                     visible = visibleIdCardNumberKeyboard
                                 ) { key ->
-                                    Log.d("CustomWidget", "onCreate: IdCardNumberKeyboard: $key")
+                                    Toast.makeText(this@MainActivity, "$key", Toast.LENGTH_SHORT).show()
                                     if (key.second == KeyboardKeyType.Complete) {
                                         visibleIdCardNumberKeyboard = false
                                     }
@@ -141,9 +158,18 @@ class MainActivity : ComponentActivity() {
                                     modifier = Modifier.fillMaxWidth(),
                                     visible = visibleTitleNumberKeyboard
                                 ) { key ->
-                                    Log.d("CustomWidget", "onCreate: TitleNumberKeyboard: $key")
+                                    Toast.makeText(this@MainActivity, "$key", Toast.LENGTH_SHORT).show()
                                     if (key.second == KeyboardKeyType.Complete) {
                                         visibleTitleNumberKeyboard = false
+                                    }
+                                }
+                                NumberKeyboardWithKeys(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    visible = visibleNumberKeyboardWithKeys
+                                ) { key ->
+                                    Toast.makeText(this@MainActivity, "$key", Toast.LENGTH_SHORT).show()
+                                    if (key.second == KeyboardKeyType.Complete) {
+                                        visibleNumberKeyboardWithKeys = false
                                     }
                                 }
                             }

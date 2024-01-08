@@ -378,7 +378,7 @@ fun TitleNumberKeyboard(
             val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
             val bottomPadding = contentPadding.calculateBottomPadding()
             val keyWidth = (maxWidth - startPadding - endPadding - horizontalSpace * 2) / 3
-            val keyboardHeight = topPadding + bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
+            val keyboardHeight = bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
             Column(modifier = Modifier.background(color = backgroundColor)) {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     Text(
@@ -395,7 +395,7 @@ fun TitleNumberKeyboard(
                         fontWeight = fontWeight,
                         fontFamily = fontFamily,
                         modifier = Modifier
-                            .padding(top = topPadding, end = endPadding)
+                            .padding(top = topPadding, end = endPadding, bottom = bottomPadding)
                             .align(Alignment.TopEnd)
                             .pointerInput(isCompletePressed) {
                                 awaitPointerEventScope {
@@ -415,7 +415,12 @@ fun TitleNumberKeyboard(
                     columns = GridCells.Fixed(3),
                     modifier = Modifier
                         .height(keyboardHeight),
-                    contentPadding = contentPadding,
+                    contentPadding = PaddingValues(
+                        start = startPadding,
+                        top = 0.dp,
+                        end = endPadding,
+                        bottom = bottomPadding,
+                    ),
                     horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
                     verticalArrangement = Arrangement.spacedBy(verticalSpace),
                     userScrollEnabled = false,
@@ -655,11 +660,192 @@ fun SidebarNumberKeyboard(
 }
 
 /**
+ * 数字键盘之配置多个按键的键盘
+ * @param visible         显示或隐藏
+ * @param horizontalSpace 水平间隙
+ * @param verticalSpace   垂直间隙
+ * @param aspectRatio     长宽比
+ */
+@Preview
+@Composable
+fun NumberKeyboardWithKeys(
+    modifier: Modifier = Modifier,
+    visible: Boolean = true,
+    backgroundColor: Color = Color(0xFFF2F3F5),
+    contentPadding: PaddingValues = PaddingValues(4.dp),
+    horizontalSpace: Dp = 4.dp,
+    verticalSpace: Dp = 4.dp,
+    aspectRatio: Float = 1.8f,
+    cornerRadius: Dp = 4.dp,
+    fontSize: TextUnit = 20.sp,
+    fontColor: Color = Color.Black,
+    fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
+    normalColor: Color = Color.White,
+    pressedColor: Color = Color(0xFFEBEDF0),
+    completeNormalColor: Color = Color(0xFF1989FA),
+    completePressedColor: Color = Color(0xFF5AA8F8),
+    completeFontSize: TextUnit = 16.sp,
+    painterDelete: Painter = painterResource(id = R.drawable.ic_keyboard_delete),
+    onKeyClick: (Pair<String, KeyboardKeyType>) -> Unit = { },
+) {
+    val keys = mutableListOf(
+        "1" to KeyboardKeyType.Number,
+        "2" to KeyboardKeyType.Number,
+        "3" to KeyboardKeyType.Number,
+        "4" to KeyboardKeyType.Number,
+        "5" to KeyboardKeyType.Number,
+        "6" to KeyboardKeyType.Number,
+        "7" to KeyboardKeyType.Number,
+        "8" to KeyboardKeyType.Number,
+        "9" to KeyboardKeyType.Number,
+        "00" to KeyboardKeyType.DoubleNumber,
+        "0" to KeyboardKeyType.Number,
+        "." to KeyboardKeyType.DecimalPoint,
+        "Delete" to KeyboardKeyType.Delete,
+        "完成" to KeyboardKeyType.Complete,
+    )
+    AnimatedVisibility(
+        modifier = modifier,
+        visible = visible,
+        enter = slideInVertically(animationSpec = tween(), initialOffsetY = { it }),
+        exit = slideOutVertically(animationSpec = tween(), targetOffsetY = { it }),
+    ) {
+        BoxWithConstraints(modifier = Modifier.background(color = backgroundColor)) {
+            val startPadding = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
+            val topPadding = contentPadding.calculateTopPadding()
+            val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
+            val bottomPadding = contentPadding.calculateBottomPadding()
+            val keyWidth = (maxWidth - startPadding - endPadding - horizontalSpace * 3) / 4
+            val keyboardHeight = topPadding + bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
+            Row(
+                modifier = Modifier
+                    .padding(end = endPadding)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    modifier = Modifier
+                        .width(startPadding + keyWidth * 3 + horizontalSpace * 2)
+                        .height(keyboardHeight),
+                    contentPadding = PaddingValues(
+                        start = startPadding,
+                        top = topPadding,
+                        end = 0.dp,
+                        bottom = bottomPadding,
+                    ),
+                    horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
+                    verticalArrangement = Arrangement.spacedBy(verticalSpace),
+                    userScrollEnabled = false,
+                ) {
+                    items(
+                        items = keys.subList(0, keys.size - 2),
+                        span = {
+                            GridItemSpan(1)
+                        },
+                        contentType = {
+                            it.second
+                        },
+                    ) { key ->
+                        var isPressed by remember { mutableStateOf(false) }
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(cornerRadius))
+                                .background(color = if (isPressed) pressedColor else normalColor)
+                                .width(width = keyWidth)
+                                .height(height = keyWidth / aspectRatio)
+                                .pointerInput(isPressed) {
+                                    awaitPointerEventScope {
+                                        isPressed = if (isPressed) {
+                                            waitForUpOrCancellation()
+                                            onKeyClick(key)
+                                            false
+                                        } else {
+                                            awaitFirstDown(requireUnconsumed = false)
+                                            true
+                                        }
+                                    }
+                                },
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = key.first,
+                                color = fontColor,
+                                fontSize = fontSize,
+                                fontWeight = fontWeight,
+                                fontFamily = fontFamily,
+                            )
+                        }
+                    }
+                }
+                Column(
+                    modifier = Modifier
+                        .width(keyWidth)
+                        .height(keyboardHeight)
+                        .padding(top = topPadding, bottom = bottomPadding),
+                    verticalArrangement = Arrangement.spacedBy(verticalSpace),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    keys.subList(keys.size - 2, keys.size).forEach { key ->
+                        var isPressed by remember { mutableStateOf(false) }
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(cornerRadius))
+                                .background(color = if (key.second == KeyboardKeyType.Delete) if (isPressed) pressedColor else normalColor else if (isPressed) completePressedColor else completeNormalColor)
+                                .fillMaxWidth()
+                                .weight(1f)
+                                .pointerInput(isPressed) {
+                                    awaitPointerEventScope {
+                                        isPressed = if (isPressed) {
+                                            waitForUpOrCancellation()
+                                            onKeyClick(key)
+                                            false
+                                        } else {
+                                            awaitFirstDown(requireUnconsumed = false)
+                                            true
+                                        }
+                                    }
+                                },
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            when (key.second) {
+                                KeyboardKeyType.Delete -> {
+                                    Image(
+                                        painter = painterDelete,
+                                        contentDescription = key.first,
+                                        modifier = Modifier.size(keyWidth / 2.5f)
+                                    )
+                                }
+
+                                else -> {
+                                    Text(
+                                        text = key.first,
+                                        color = Color.White,
+                                        fontSize = completeFontSize,
+                                        fontWeight = fontWeight,
+                                        fontFamily = fontFamily,
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
  * 键盘按键类型
  */
 enum class KeyboardKeyType {
     /** 数字 */
     Number,
+
+    /** 两倍数字 */
+    DoubleNumber,
 
     /** 隐藏 */
     Hide,

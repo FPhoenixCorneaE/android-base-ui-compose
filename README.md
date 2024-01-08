@@ -26,6 +26,7 @@ dependencies {
 * feat: 添加自定义数字键盘之带右侧栏的键盘[SidebarNumberKeyboard](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/NumberKeyboard.kt)
 * feat: 添加自定义数字键盘之身份证号键盘[IdCardNumberKeyboard](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/NumberKeyboard.kt)
 * feat: 添加自定义数字键盘之带标题的键盘[TitleNumberKeyboard](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/NumberKeyboard.kt)
+* feat: 添加自定义数字键盘之配置多个按键的键盘[NumberKeyboardWithKeys](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/NumberKeyboard.kt)
 
 #### 2024-01-02 
 * feat: 添加自定义数字键盘之默认键盘[BasicNumberKeyboard](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/NumberKeyboard.kt)
