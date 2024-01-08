@@ -72,6 +72,7 @@ class MainActivity : ComponentActivity() {
                                 var visibleIdCardNumberKeyboard by remember { mutableStateOf(false) }
                                 var visibleTitleNumberKeyboard by remember { mutableStateOf(false) }
                                 var visibleNumberKeyboardWithKeys by remember { mutableStateOf(false) }
+                                var visibleRandomNumberKeyboard by remember { mutableStateOf(false) }
                                 Text(
                                     text = "弹出默认键盘",
                                     modifier = Modifier.clickableNoRipple {
@@ -80,6 +81,7 @@ class MainActivity : ComponentActivity() {
                                         visibleIdCardNumberKeyboard = false
                                         visibleTitleNumberKeyboard = false
                                         visibleNumberKeyboardWithKeys = false
+                                        visibleRandomNumberKeyboard = false
                                     },
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -91,6 +93,7 @@ class MainActivity : ComponentActivity() {
                                         visibleIdCardNumberKeyboard = false
                                         visibleTitleNumberKeyboard = false
                                         visibleNumberKeyboardWithKeys = false
+                                        visibleRandomNumberKeyboard = false
                                     },
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -102,6 +105,7 @@ class MainActivity : ComponentActivity() {
                                         visibleIdCardNumberKeyboard = true
                                         visibleTitleNumberKeyboard = false
                                         visibleNumberKeyboardWithKeys = false
+                                        visibleRandomNumberKeyboard = false
                                     },
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -113,6 +117,7 @@ class MainActivity : ComponentActivity() {
                                         visibleIdCardNumberKeyboard = false
                                         visibleTitleNumberKeyboard = true
                                         visibleNumberKeyboardWithKeys = false
+                                        visibleRandomNumberKeyboard = false
                                     },
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -124,6 +129,19 @@ class MainActivity : ComponentActivity() {
                                         visibleIdCardNumberKeyboard = false
                                         visibleTitleNumberKeyboard = false
                                         visibleNumberKeyboardWithKeys = true
+                                        visibleRandomNumberKeyboard = false
+                                    },
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "弹出随机数字键盘",
+                                    modifier = Modifier.clickableNoRipple {
+                                        visibleBasicNumberKeyboard = false
+                                        visibleSidebarNumberKeyboard = false
+                                        visibleIdCardNumberKeyboard = false
+                                        visibleTitleNumberKeyboard = false
+                                        visibleNumberKeyboardWithKeys = false
+                                        visibleRandomNumberKeyboard = true
                                     },
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -170,6 +188,15 @@ class MainActivity : ComponentActivity() {
                                     Toast.makeText(this@MainActivity, "$key", Toast.LENGTH_SHORT).show()
                                     if (key.second == KeyboardKeyType.Complete) {
                                         visibleNumberKeyboardWithKeys = false
+                                    }
+                                }
+                                RandomNumberKeyboard(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    visible = visibleRandomNumberKeyboard
+                                ) { key ->
+                                    Toast.makeText(this@MainActivity, "$key", Toast.LENGTH_SHORT).show()
+                                    if (key.second == KeyboardKeyType.Hide) {
+                                        visibleRandomNumberKeyboard = false
                                     }
                                 }
                             }
