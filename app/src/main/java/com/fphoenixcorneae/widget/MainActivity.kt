@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fphoenixcorneae.compose.clickableNoRipple
@@ -200,11 +201,50 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             }
+                            Text(text = "CircleProgressBar：")
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                CircleProgressBar(
+                                    radius = 30.dp,
+                                    progress = 100f,
+                                    colorStops = listOf(0f to Color.Blue, 0.5f to Color.Yellow, 1f to Color.Red),
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                CircleProgressBar(
+                                    modifier = Modifier.background(Color.White),
+                                    progress = 100f,
+                                    radius = 30.dp,
+                                    color = Color.Red,
+                                    colorStops = listOf(0f to Color.Blue, 0.5f to Color.Yellow, 1f to Color.Red),
+                                    startAngle = -210f,
+                                    maxAngle = 240f,
+                                    centerText = buildAnnotatedString { append("环形进度条") },
+                                    centerTextStyle = TextStyle(fontSize = 12.sp),
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                CircleProgressBar(
+                                    radius = 30.dp,
+                                    progress = 75f,
+                                    clockwise = false,
+                                    colorStops = listOf(0f to Color.Blue, 0.5f to Color.Yellow, 1f to Color.Red)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                CircleProgressBar(
+                                    modifier = Modifier.background(Color.White),
+                                    progress = 100f,
+                                    radius = 30.dp,
+                                    color = Color.Red,
+                                    startAngle = -150f,
+                                    maxAngle = 240f,
+                                    centerText = buildAnnotatedString { append("环形进度条") },
+                                    centerTextStyle = TextStyle(fontSize = 12.sp),
+                                    clockwise = false,
+                                )
+                            }
+                            Text(text = "GlowCircle：")
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center
                             ) {
-                                Text(text = "GlowCircle：")
                                 GlowCircle(
                                     modifier = Modifier
                                         .size(60.dp)
@@ -263,8 +303,8 @@ class MainActivity : ComponentActivity() {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Heart(isFill = false)
                             }
+                            Text(text = "MarqueeAperture：")
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(text = "MarqueeAperture：")
                                 MarqueeAperture(modifier = Modifier.size(60.dp), radius = 8.dp)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 MarqueeAperture(modifier = Modifier.size(60.dp), radius = 30.dp, color2Stops = null)

@@ -23,6 +23,9 @@ dependencies {
 ### 更新日志
 
 #### 2024-01-08 
+* feat: 添加自定义环形进度条[CircleProgressBar](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/CircleProgressBar.kt)：支持渐变进度，支持动画，支持逆时针增加进度，支持非满圆
+
+#### 2024-01-08 
 * feat: 添加自定义数字键盘之带右侧栏的键盘[SidebarNumberKeyboard](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/NumberKeyboard.kt)
 * feat: 添加自定义数字键盘之身份证号键盘[IdCardNumberKeyboard](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/NumberKeyboard.kt)
 * feat: 添加自定义数字键盘之带标题的键盘[TitleNumberKeyboard](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/NumberKeyboard.kt)
