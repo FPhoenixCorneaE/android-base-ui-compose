@@ -34,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -50,7 +51,7 @@ class MainActivity : ComponentActivity() {
 
     private val switchEnabled = MutableStateFlow(false)
 
-    @OptIn(ExperimentalFoundationApi::class)
+    @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -200,6 +201,13 @@ class MainActivity : ComponentActivity() {
                                         visibleRandomNumberKeyboard = false
                                     }
                                 }
+                            }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(text = "AuthCodeTextField：")
+                                AuthCodeTextField(
+                                    length = 4,
+                                    cursorCharacter = "|",
+                                )
                             }
                             Text(text = "CircleProgressBar：")
                             Row(verticalAlignment = Alignment.CenterVertically) {
