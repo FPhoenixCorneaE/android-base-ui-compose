@@ -25,6 +25,7 @@ dependencies {
 #### 2024-01-15
 
 * feat: 添加自定义验证码输入框[AuthCodeTextField](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/AuthCodeTextField.kt)
+  <br>
   致谢：[Jetpack Compose实现验证码输入框](https://juejin.cn/post/7249585135799697468?searchId=20240112173131CA2803BCAA277339FB3D)
 
 #### 2024-01-10
@@ -53,9 +54,11 @@ dependencies {
 #### 2023-12-28
 
 * feat: 添加自定义五角星[Star](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/Star.kt)
+  <br>
   致谢：[Android 自定义View 绘制五角星](https://www.jianshu.com/p/24efb605098b)
 * feat: 添加自定义红心[Heart](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/Heart.kt)
 * feat: 添加自定义跑马灯光圈[MarqueeAperture](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/MarqueeAperture.kt)
+  <br>
   致谢：[android 自定义view 跑马灯-光圈效果](https://juejin.cn/post/7171030095866363934)
 
 #### 2023-12-27
@@ -72,4 +75,5 @@ dependencies {
 * feat: 添加自定义打字机效果Text[TypewriterText](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/TypewriterText.kt)
 * feat: 添加自定义三角形[Triangle](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/Triangle.kt)
 * feat: 添加自定义开关[Switch](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/Switch.kt)
+  <br>
   致谢：[Compose制作一个“IOS”效果的SwitchButton](https://juejin.cn/post/7134702107742961701)
