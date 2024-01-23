@@ -1,4 +1,4 @@
-package com.fphoenixcorneae.widget
+package com.fphoenixcorneae.widget.progressbar
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -45,6 +45,7 @@ import kotlin.math.sin
  * @param max              圆环最大进度
  * @param radius           圆环内环半径
  * @param color            圆环进度颜色
+ * @param colorStops       圆环渐变颜色
  * @param backgroundColor  圆环背景色
  * @param ringThickness    圆环的厚度
  * @param clockwise        是否顺时针增加，默认为true

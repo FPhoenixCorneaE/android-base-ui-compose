@@ -22,6 +22,11 @@ dependencies {
 
 ### 更新日志
 
+#### 2024-01-23
+
+* feat: 添加自定义水平进度条[HorizontalProgressBar](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/progressbar/HorizontalProgressBar.kt)
+* feat: 添加自定义垂直进度条[VerticalProgressBar](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/progressbar/VerticalProgressBar.kt)
+
 #### 2024-01-15
 
 * feat: 添加自定义验证码输入框[AuthCodeTextField](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/AuthCodeTextField.kt)
@@ -30,7 +35,7 @@ dependencies {
 
 #### 2024-01-10
 
-* feat: 添加自定义环形进度条[CircleProgressBar](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/CircleProgressBar.kt)：支持渐变进度，支持动画，支持逆时针增加进度，支持非满圆
+* feat: 添加自定义环形进度条[CircleProgressBar](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/progressbar/CircleProgressBar.kt)：支持渐变进度，支持动画，支持逆时针增加进度，支持非满圆
 
 #### 2024-01-08
 

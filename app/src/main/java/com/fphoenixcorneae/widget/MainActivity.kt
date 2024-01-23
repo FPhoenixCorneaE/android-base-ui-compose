@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -42,6 +43,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fphoenixcorneae.compose.clickableNoRipple
+import com.fphoenixcorneae.widget.progressbar.CircleProgressBar
+import com.fphoenixcorneae.widget.progressbar.HorizontalProgressBar
+import com.fphoenixcorneae.widget.progressbar.VerticalProgressBar
 import com.fphoenixcorneae.widget.ui.theme.ComposeCustomWidgetTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -199,6 +203,82 @@ class MainActivity : ComponentActivity() {
                                     Toast.makeText(this@MainActivity, "$key", Toast.LENGTH_SHORT).show()
                                     if (key.second == KeyboardKeyType.Hide) {
                                         visibleRandomNumberKeyboard = false
+                                    }
+                                }
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.height(120.dp)) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier
+                                        .fillMaxHeight()
+                                        .weight(1f)
+                                ) {
+                                    Text(text = "HorizontalProgressBar：")
+                                    HorizontalProgressBar(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(5.dp),
+                                        progress = 80f,
+                                        colorStops = listOf(0f to Color.Blue, 0.5f to Color.Magenta, 1f to Color.Red),
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    HorizontalProgressBar(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(5.dp),
+                                        progress = 80f,
+                                        showAnim = false,
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    HorizontalProgressBar(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(5.dp),
+                                        progress = 100f,
+                                        colorStops = listOf(0f to Color.Blue, 0.5f to Color.Magenta, 1f to Color.Red),
+                                        showAnim = false,
+                                    )
+                                }
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier
+                                        .fillMaxHeight()
+                                        .weight(1f)
+                                ) {
+                                    Text(text = "VerticalProgressBar：")
+                                    Row {
+                                        VerticalProgressBar(
+                                            modifier = Modifier
+                                                .width(5.dp)
+                                                .fillMaxHeight(),
+                                            progress = 80f,
+                                            colorStops = listOf(
+                                                0f to Color.Blue,
+                                                0.5f to Color.Magenta,
+                                                1f to Color.Red
+                                            ),
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        VerticalProgressBar(
+                                            modifier = Modifier
+                                                .width(5.dp)
+                                                .fillMaxHeight(),
+                                            progress = 80f,
+                                            showAnim = false,
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        VerticalProgressBar(
+                                            modifier = Modifier
+                                                .width(5.dp)
+                                                .fillMaxHeight(),
+                                            progress = 100f,
+                                            colorStops = listOf(
+                                                0f to Color.Blue,
+                                                0.5f to Color.Magenta,
+                                                1f to Color.Red
+                                            ),
+                                            showAnim = false,
+                                        )
                                     }
                                 }
                             }
