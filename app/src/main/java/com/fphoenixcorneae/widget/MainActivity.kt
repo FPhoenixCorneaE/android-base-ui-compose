@@ -43,6 +43,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fphoenixcorneae.compose.clickableNoRipple
+import com.fphoenixcorneae.widget.chart.PieChart
 import com.fphoenixcorneae.widget.progressbar.CircleProgressBar
 import com.fphoenixcorneae.widget.progressbar.HorizontalProgressBar
 import com.fphoenixcorneae.widget.progressbar.VerticalProgressBar
@@ -206,12 +207,43 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(text = "PieChart：")
+                                Row(
+                                    modifier = Modifier
+                                        .background(Color(0x50888888))
+                                        .padding(20.dp)
+                                ) {
+                                    PieChart(
+                                        modifier = Modifier.size(120.dp),
+                                        datas = listOf(
+                                            Triple(Color.Red, 2f, Triple("红色", Color.Black, 10.sp)),
+                                            Triple(Color.Green, 3f, Triple("绿色", Color.Black, 10.sp)),
+                                            Triple(Color.Blue, 5f, Triple("蓝色", Color.Black, 10.sp)),
+                                            Triple(Color.Yellow, 7f, Triple("黄色", Color.Black, 10.sp)),
+                                        ),
+                                        enabled = true,
+                                    )
+                                    Spacer(modifier = Modifier.width(20.dp))
+                                    PieChart(
+                                        modifier = Modifier.size(120.dp),
+                                        datas = listOf(
+                                            Triple(Color.Red, 2f, Triple("红色", Color.Black, 10.sp)),
+                                            Triple(Color.Green, 3f, Triple("绿色", Color.Black, 10.sp)),
+                                            Triple(Color.Blue, 5f, Triple("蓝色", Color.Black, 10.sp)),
+                                            Triple(Color.Yellow, 7f, Triple("黄色", Color.Black, 10.sp)),
+                                        ),
+                                        enabled = false,
+                                    )
+                                }
+                            }
                             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.height(120.dp)) {
                                 Column(
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                     modifier = Modifier
-                                        .fillMaxHeight()
-                                        .weight(1f)
+                                        .fillMaxHeight(0.5f)
+                                        .weight(1f),
+                                    verticalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Text(text = "HorizontalProgressBar：")
                                     HorizontalProgressBar(
@@ -246,12 +278,15 @@ class MainActivity : ComponentActivity() {
                                         .weight(1f)
                                 ) {
                                     Text(text = "VerticalProgressBar：")
-                                    Row {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(0.3f),
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
                                         VerticalProgressBar(
                                             modifier = Modifier
                                                 .width(5.dp)
                                                 .fillMaxHeight(),
-                                            progress = 80f,
+                                            progress = 30f,
                                             colorStops = listOf(
                                                 0f to Color.Blue,
                                                 0.5f to Color.Magenta,
@@ -263,7 +298,7 @@ class MainActivity : ComponentActivity() {
                                             modifier = Modifier
                                                 .width(5.dp)
                                                 .fillMaxHeight(),
-                                            progress = 80f,
+                                            progress = 50f,
                                             showAnim = false,
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))

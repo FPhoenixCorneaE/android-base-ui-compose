@@ -22,6 +22,12 @@ dependencies {
 
 ### 更新日志
 
+#### 2024-01-25
+
+* feat: 添加自定义饼状图[PieChart](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/chart/PieChart.kt)
+  <br>
+  致谢：[CustomViewProject](https://gitee.com/lanyangyangzzz/custom-view-project)
+
 #### 2024-01-23
 
 * feat: 添加自定义水平进度条[HorizontalProgressBar](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/progressbar/HorizontalProgressBar.kt)
