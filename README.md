@@ -22,6 +22,12 @@ dependencies {
 
 ### 更新日志
 
+#### 2024-01-26
+
+* feat: 使用[SimplePath]导五角星圆角
+  <br>
+  致谢：[Android 多边形导圆角（Path画折线导圆角）](https://blog.csdn.net/liuyu0915/article/details/131721872)
+
 #### 2024-01-25
 
 * feat: 添加自定义饼状图[PieChart](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/chart/PieChart.kt)

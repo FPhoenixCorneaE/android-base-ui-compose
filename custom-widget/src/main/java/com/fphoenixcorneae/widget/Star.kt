@@ -18,13 +18,14 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.fphoenixcorneae.graphics.path.SimplePath
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -36,6 +37,7 @@ import kotlin.math.sin
 fun Star(
     modifier: Modifier = Modifier,
     starSize: Dp = 24.dp,
+    cornerRadius: Dp = 2.dp,
     borderWidth: Dp = 0.dp,
     borderColor: Color = Color.Transparent,
     backgroundColor: Color = Color.Transparent,
@@ -45,9 +47,9 @@ fun Star(
     Box(
         modifier = modifier
             .size(size = starSize)
-            .clip(StarShape)
+            .clip(StarShape(cornerRadius))
             .background(color = backgroundColor)
-            .border(width = borderWidth, color = borderColor, shape = StarShape)
+            .border(width = borderWidth, color = borderColor, shape = StarShape(cornerRadius))
             .drawWithContent {
                 drawContent()
                 drawRect(color = filledColor, size = size.copy(size.width * filledFraction))
@@ -55,10 +57,12 @@ fun Star(
     )
 }
 
-val StarShape = object : Shape {
+class StarShape(val cornerRadius: Dp = 2.dp) : Shape {
     override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
+        val startRadius = density.run { cornerRadius.toPx() }
+        val endRadius = density.run { cornerRadius.toPx() }
         return Outline.Generic(
-            path = Path().apply {
+            path = SimplePath.Builder().apply {
                 // 外圆半径
                 val outerR = size.minDimension / 2
                 // 内圆半径
@@ -92,16 +96,17 @@ val StarShape = object : Shape {
                         centerX + (cos(Math.toRadians((innerCircleAngle + it * averageAngle).toDouble())) * innerR).toFloat()
                     innerPoint.y =
                         centerY + (-sin(Math.toRadians((innerCircleAngle + it * averageAngle).toDouble())) * innerR).toFloat()
-                    // 先移动到第一个大圆上的点
                     if (it == 0) {
-                        moveTo(x = outerPoint.x, y = outerPoint.y)
+                        // 先移动到第一个大圆上的点
+                        moveTo(x = outerPoint.x, y = outerPoint.y, startRadius = startRadius, endRadius = endRadius)
+                    } else {
+                        // 坐标连接，先大圆角上的点，再到小圆角上的点
+                        lineTo(x = outerPoint.x, y = outerPoint.y, startRadius = startRadius, endRadius = endRadius)
                     }
-                    // 坐标连接，先大圆角上的点，再到小圆角上的点
-                    lineTo(x = outerPoint.x, y = outerPoint.y)
-                    lineTo(x = innerPoint.x, y = innerPoint.y)
+                    lineTo(x = innerPoint.x, y = innerPoint.y, startRadius = startRadius, endRadius = endRadius)
                 }
                 close()
-            },
+            }.build().asComposePath(),
         )
     }
 }

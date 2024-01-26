@@ -41,6 +41,7 @@ import kotlin.math.floor
 fun RatingBar(
     modifier: Modifier = Modifier,
     starSize: Dp = 24.dp,
+    starCornerRadius: Dp = 2.dp,
     numStars: Int = 5,
     space: Dp = 8.dp,
     rating: Float = 3f,
@@ -97,6 +98,7 @@ fun RatingBar(
             }
             Star(
                 starSize = starSize,
+                cornerRadius = starCornerRadius,
                 borderWidth = borderWidth,
                 borderColor = borderColor,
                 backgroundColor = backgroundColor,
