@@ -100,7 +100,7 @@ class SimplePath {
                             path.lineTo(x, y)
                         }
                     }
-                    mList.size - 1 -> {
+                    mList.lastIndex -> {
                         // 最后一个点
                         val p0 = mList[0]
                         if (p.x == p0.x && p.y == p0.y && p0.hasCorner()) {
