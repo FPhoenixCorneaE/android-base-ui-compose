@@ -25,6 +25,9 @@ dependencies {
 #### 2024-02-05
 
 * feat: 添加自定义渐变背景按钮[GradientButton](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/GradientButton.kt)
+* feat: 添加自定义阴影绘制[Shadow](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/Shadow.kt)
+  <br>
+  致谢：[Jetpack Compose：自定义阴影绘制，支持阴影颜色、圆角、偏移量](https://blog.csdn.net/lalallallalla/article/details/121502260)
 
 #### 2024-01-26
 

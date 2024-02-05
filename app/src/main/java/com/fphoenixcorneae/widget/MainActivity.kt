@@ -25,6 +25,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -325,6 +326,20 @@ class MainActivity : ComponentActivity() {
                                 AuthCodeTextField(
                                     length = 4,
                                     cursorCharacter = "|",
+                                )
+                            }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(text = "Shadow 绘制：")
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Divider(
+                                    color = Color.Black.copy(0.05f),
+                                    modifier = Modifier.drawColoredShadow(
+                                        color = Color.Black,
+                                        alpha = 0.05f,
+                                        offsetY = (-1.6).dp,
+                                        shadowRadius = 4.dp,
+                                    ),
+                                    thickness = 2.dp,
                                 )
                             }
                             Row(
