@@ -22,6 +22,10 @@ dependencies {
 
 ### 更新日志
 
+#### 2024-02-05
+
+* feat: 添加自定义渐变背景按钮[GradientButton](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/GradientButton.kt)
+
 #### 2024-01-26
 
 * feat: 使用[SimplePath]导五角星圆角

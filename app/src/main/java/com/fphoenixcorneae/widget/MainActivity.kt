@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -37,9 +38,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fphoenixcorneae.compose.clickableNoRipple
@@ -322,6 +325,30 @@ class MainActivity : ComponentActivity() {
                                 AuthCodeTextField(
                                     length = 4,
                                     cursorCharacter = "|",
+                                )
+                            }
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Text(text = "GradientButton：")
+                                GradientButton(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(30.dp),
+                                    text = "Gradient Button",
+                                    textStyle = TextStyle(
+                                        color = Color.White,
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.W500
+                                    ),
+                                    gradientBrush = Brush.linearGradient(
+                                        listOf(
+                                            Color(0xFF4185F2),
+                                            Color(0xFF3362F7)
+                                        )
+                                    ),
+                                    shape = RoundedCornerShape(6.dp),
                                 )
                             }
                             Text(text = "CircleProgressBar：")
