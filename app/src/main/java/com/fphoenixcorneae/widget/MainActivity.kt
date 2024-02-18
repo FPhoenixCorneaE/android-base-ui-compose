@@ -7,10 +7,13 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -21,6 +24,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -41,6 +46,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -55,6 +61,7 @@ import com.fphoenixcorneae.widget.ui.theme.ComposeCustomWidgetTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import com.fphoenixcorneae.widget.R
 
 class MainActivity : ComponentActivity() {
 
@@ -328,44 +335,6 @@ class MainActivity : ComponentActivity() {
                                     cursorCharacter = "|",
                                 )
                             }
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text(text = "Shadow 绘制：")
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Divider(
-                                    color = Color.Black.copy(0.05f),
-                                    modifier = Modifier.drawColoredShadow(
-                                        color = Color.Black,
-                                        alpha = 0.05f,
-                                        offsetY = (-1.6).dp,
-                                        shadowRadius = 4.dp,
-                                    ),
-                                    thickness = 2.dp,
-                                )
-                            }
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                Text(text = "GradientButton：")
-                                GradientButton(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(30.dp),
-                                    text = "Gradient Button",
-                                    textStyle = TextStyle(
-                                        color = Color.White,
-                                        fontSize = 14.sp,
-                                        fontWeight = FontWeight.W500
-                                    ),
-                                    gradientBrush = Brush.linearGradient(
-                                        listOf(
-                                            Color(0xFF4185F2),
-                                            Color(0xFF3362F7)
-                                        )
-                                    ),
-                                    shape = RoundedCornerShape(6.dp),
-                                )
-                            }
                             Text(text = "CircleProgressBar：")
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 CircleProgressBar(
@@ -403,6 +372,74 @@ class MainActivity : ComponentActivity() {
                                     centerText = buildAnnotatedString { append("环形进度条") },
                                     centerTextStyle = TextStyle(fontSize = 12.sp),
                                     clockwise = false,
+                                )
+                            }
+                            Text(text = "CustomSeekbar：")
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(96.dp)
+                                        .background(Color.White, RoundedCornerShape(6.dp))
+                                        .padding(horizontal = 20.dp)
+                                ) {
+                                    Image(
+                                        painter = painterResource(id = R.mipmap.ic_voice_silence),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(35.dp)
+                                            .align(Alignment.CenterStart)
+                                    )
+                                    Image(
+                                        painter = painterResource(id = R.mipmap.ic_voice),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(35.dp)
+                                            .align(Alignment.CenterEnd)
+                                    )
+                                    CustomSeekbar(
+                                        modifier = Modifier
+                                            .padding(horizontal = 70.dp)
+                                            .align(Alignment.CenterStart)
+                                    )
+                                }
+                            }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(text = "Shadow 绘制：")
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Divider(
+                                    color = Color.Black.copy(0.05f),
+                                    modifier = Modifier.drawColoredShadow(
+                                        color = Color.Black,
+                                        alpha = 0.05f,
+                                        offsetY = (-1.6).dp,
+                                        shadowRadius = 4.dp,
+                                    ),
+                                    thickness = 2.dp,
+                                )
+                            }
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Text(text = "GradientButton：")
+                                GradientButton(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(30.dp),
+                                    text = "Gradient Button",
+                                    textStyle = TextStyle(
+                                        color = Color.White,
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.W500
+                                    ),
+                                    gradientBrush = Brush.linearGradient(
+                                        listOf(
+                                            Color(0xFF4185F2),
+                                            Color(0xFF3362F7)
+                                        )
+                                    ),
+                                    shape = RoundedCornerShape(6.dp),
                                 )
                             }
                             Text(text = "GlowCircle：")
@@ -483,7 +520,10 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                val pagerState = rememberPagerState(initialPage = 1)
+                                val pagerState = rememberPagerState(
+                                    initialPage = 1,
+                                    initialPageOffsetFraction = 0f
+                                ) { 3 }
                                 Text(text = "TabRow：")
                                 val tabs = listOf("发现", "推荐", "关注")
                                 TabRow(
@@ -498,16 +538,31 @@ class MainActivity : ComponentActivity() {
                                     selectedContentColor = Color(0xFF444444),
                                     dividerColor = Color(0xFFCCCCCC),
                                 )
-                                HorizontalPager(pageCount = tabs.size, state = pagerState) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(60.dp),
-                                        contentAlignment = Alignment.Center,
-                                    ) {
-                                        Text(text = tabs[it])
+                                HorizontalPager(
+                                    modifier = Modifier,
+                                    state = pagerState,
+                                    pageSpacing = 0.dp,
+                                    userScrollEnabled = true,
+                                    reverseLayout = false,
+                                    contentPadding = PaddingValues(0.dp),
+                                    beyondBoundsPageCount = 0,
+                                    pageSize = PageSize.Fill,
+                                    flingBehavior = PagerDefaults.flingBehavior(state = pagerState),
+                                    key = null,
+                                    pageNestedScrollConnection = PagerDefaults.pageNestedScrollConnection(
+                                        Orientation.Horizontal
+                                    ),
+                                    pageContent =  {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(60.dp),
+                                            contentAlignment = Alignment.Center,
+                                        ) {
+                                            Text(text = tabs[it])
+                                        }
                                     }
-                                }
+                                )
                             }
                             val isChecked by switchEnabled.collectAsState()
                             Row(verticalAlignment = Alignment.CenterVertically) {

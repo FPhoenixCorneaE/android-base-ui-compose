@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.currentRecomposeScope
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -58,7 +59,7 @@ fun RatingBar(
     val spacePx = density.run { space.toPx() }
     val width = starSize * numStars + space * (numStars - 1)
     val widthPx = density.run { width.toPx() }
-    var mutableRating by remember { mutableStateOf(rating) }
+    var mutableRating by remember { mutableFloatStateOf(rating) }
     Row(
         modifier = modifier
             .width(width)

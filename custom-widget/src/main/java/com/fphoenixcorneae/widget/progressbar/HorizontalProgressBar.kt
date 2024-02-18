@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -48,11 +49,12 @@ fun HorizontalProgressBar(
 ) {
     val density = LocalDensity.current
     val targetProgress = progress.coerceAtLeast(0f).coerceAtMost(max)
-    var targetValue by remember { mutableStateOf(if (showAnim) 0f else targetProgress) }
+    var targetValue by remember { mutableFloatStateOf(if (showAnim) 0f else targetProgress) }
     val animatedProgress by animateFloatAsState(
         targetValue = targetValue,
         visibilityThreshold = 0.001f,
         animationSpec = tween(durationMillis = animDurationMillis),
+        label = "",
     )
     LaunchedEffect(key1 = showAnim) {
         if (showAnim) {

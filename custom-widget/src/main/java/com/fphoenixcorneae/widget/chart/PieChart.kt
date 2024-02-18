@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -60,7 +62,7 @@ import kotlin.math.sqrt
  * @param durationMillis  动画时长
  */
 @Stable
-@OptIn(ExperimentalTextApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PieChart(
     modifier: Modifier = Modifier,
@@ -76,11 +78,12 @@ fun PieChart(
     val density = LocalDensity.current
     val textMeasurer = rememberTextMeasurer()
     val view = LocalView.current
-    var targetFraction by remember { mutableStateOf(if (view.isInEditMode) 1f else 0f) }
+    var targetFraction by remember { mutableFloatStateOf(if (view.isInEditMode) 1f else 0f) }
     val currentFraction by animateFloatAsState(
         targetValue = targetFraction,
         animationSpec = tween(durationMillis = durationMillis, easing = LinearEasing),
         visibilityThreshold = 0.01f,
+        label = "",
     )
     val clipPath = Path()
     // 总数
@@ -90,10 +93,10 @@ fun PieChart(
     var centerOffset: Offset? = null
     val requestDisallowInterceptTouchEvent = RequestDisallowInterceptTouchEvent()
     // 点击图表
-    var clickPosition by remember { mutableStateOf(-1) }
-    var offsetAngle by remember { mutableStateOf(0f) }
-    var downAngle by remember { mutableStateOf(0f) }
-    var originAngle by remember { mutableStateOf(0f) }
+    var clickPosition by remember { mutableIntStateOf(-1) }
+    var offsetAngle by remember { mutableFloatStateOf(0f) }
+    var downAngle by remember { mutableFloatStateOf(0f) }
+    var originAngle by remember { mutableFloatStateOf(0f) }
     LaunchedEffect(key1 = Unit) {
         // 开始动画
         targetFraction = 1f

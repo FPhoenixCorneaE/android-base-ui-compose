@@ -197,7 +197,7 @@ fun AuthCodeTextField(
                         }
 
                         CodeState.INPUTTING -> {
-                            Crossfade(targetState = isVisible) {
+                            Crossfade(targetState = isVisible, label = "") {
                                 if (it) {
                                     Text(
                                         text = cursorCharacter,

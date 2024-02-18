@@ -67,7 +67,10 @@ import kotlin.math.abs
 fun TabRow(
     modifier: Modifier = Modifier,
     tabs: List<String>,
-    pagerState: PagerState = rememberPagerState(),
+    pagerState: PagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) { tabs.size },
     containerColor: Color = Color.White,
     contentColor: Color = Color.Gray,
     selectedContentColor: Color = Color.Black,
@@ -187,7 +190,6 @@ fun PreviewTabRow() {
                 "推荐",
                 "关注",
             ),
-            pagerState = rememberPagerState(),
             containerColor = Color(0xFFFAFAFA),
             contentColor = Color(0xFF888888),
             selectedContentColor = Color(0xFF444444),

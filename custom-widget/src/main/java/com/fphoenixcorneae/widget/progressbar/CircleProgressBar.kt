@@ -56,7 +56,6 @@ import kotlin.math.sin
  * @param drawInitialPoint 是否绘制初始点
  * @param durationMillis   动画时长
  */
-@OptIn(ExperimentalTextApi::class)
 @Composable
 fun CircleProgressBar(
     modifier: Modifier = Modifier,
@@ -85,6 +84,7 @@ fun CircleProgressBar(
         finishedListener = {
             animState = AnimState.Stop
         },
+        label = "",
     )
     LaunchedEffect(key1 = Unit) {
         animState = AnimState.Start

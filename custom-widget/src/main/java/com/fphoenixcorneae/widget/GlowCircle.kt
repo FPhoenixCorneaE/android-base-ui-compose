@@ -15,9 +15,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asComposePaint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.graphics.toComposePaint
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -44,14 +44,15 @@ fun GlowCircle(
     durationMillis: Int = 1000,
 ) {
     val density = LocalDensity.current
-    val alpha by rememberInfiniteTransition().animateFloat(
+    val alpha by rememberInfiniteTransition(label = "").animateFloat(
         initialValue = startAlpha,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = durationMillis, easing = LinearEasing),
             // 反向执行
             repeatMode = RepeatMode.Reverse,
-        )
+        ),
+        label = "",
     )
     val paint = Paint()
     Box(
@@ -65,7 +66,7 @@ fun GlowCircle(
                     /* style = */ blurStyle,
                 )
                 val radius = size.minDimension / 2 - density.run { blurRadius.toPx() }
-                it.drawCircle(center = center, radius = radius, paint = paint.toComposePaint())
+                it.drawCircle(center = center, radius = radius, paint = paint.asComposePaint())
             }
         },
     )

@@ -52,13 +52,14 @@ fun MarqueeAperture(
     durationMillis: Int = 3000,
 ) {
     val density = LocalDensity.current
-    val rotateDegree by rememberInfiniteTransition().animateFloat(
+    val rotateDegree by rememberInfiniteTransition(label = "").animateFloat(
         initialValue = 0f,
         targetValue = 360f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = durationMillis, easing = LinearEasing),
             repeatMode = RepeatMode.Restart,
-        )
+        ),
+        label = "",
     )
     val clipPath = Path()
     Canvas(modifier = modifier) {
