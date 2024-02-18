@@ -374,6 +374,42 @@ class MainActivity : ComponentActivity() {
                                     clockwise = false,
                                 )
                             }
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Text(text = "Rocker：")
+                                Rocker(
+                                    modifier = Modifier.size(108.dp),
+                                    onLeftPressed = {
+                                        repeat(Int.MAX_VALUE) {
+                                            println("onLeftPressed: $it")
+                                            delay(500L)
+                                        }
+                                    },
+                                    onUpPressed = {
+                                        repeat(Int.MAX_VALUE) {
+                                            println("onUpPressed: $it")
+                                            delay(500L)
+                                        }
+                                    },
+                                    onRightPressed = {
+                                        repeat(Int.MAX_VALUE) {
+                                            println("onRightPressed: $it")
+                                            delay(500L)
+                                        }
+                                    },
+                                    onDownPressed = {
+                                        repeat(Int.MAX_VALUE) {
+                                            println("onDownPressed: $it")
+                                            delay(500L)
+                                        }
+                                    },
+                                    onSteeringWheelChanged = {
+                                        println("onSteeringWheelChanged: $it")
+                                    },
+                                )
+                            }
                             Text(text = "CustomSeekbar：")
                             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                                 Box(
@@ -552,7 +588,7 @@ class MainActivity : ComponentActivity() {
                                     pageNestedScrollConnection = PagerDefaults.pageNestedScrollConnection(
                                         Orientation.Horizontal
                                     ),
-                                    pageContent =  {
+                                    pageContent = {
                                         Box(
                                             modifier = Modifier
                                                 .fillMaxWidth()

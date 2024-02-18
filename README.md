@@ -25,6 +25,7 @@ dependencies {
 #### 2024-02-18
 
 * feat: 添加自定义拖动条[CustomSeekbar](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/CustomSeekbar.kt)
+* feat: 添加自定义摇杆器[Rocker](https://github.com/FPhoenixCorneaE/compose-custom-widget/blob/main/custom-widget/src/main/java/com/fphoenixcorneae/widget/Rocker.kt)
 
 #### 2024-02-05
 
