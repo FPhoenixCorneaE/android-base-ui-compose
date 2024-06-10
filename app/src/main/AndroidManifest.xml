@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.fphoenixcorneae.widget.ChartActivity"
+            android:name="com.fphoenixcorneae.baseui.ChartActivity"
             android:exported="true" />
     </application>
 

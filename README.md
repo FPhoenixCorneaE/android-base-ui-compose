@@ -1,6 +1,6 @@
-# compose-custom-widget
+# android-base-ui-compose
 
-## compose版自定义小部件
+## compose 版 Android 基本ui 自定义View
 
 [![latest](https://jitpack.io/v/FPhoenixCorneaE/compose-custom-widget.svg)](https://jitpack.io/#FPhoenixCorneaE/compose-custom-widget)
 
