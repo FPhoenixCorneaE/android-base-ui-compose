@@ -36,7 +36,7 @@ dependencies {
 
 #### 2024-01-26
 
-* feat: 使用[SimplePath]导五角星圆角
+* feat: 使用[SimplePath](https://github.com/FPhoenixCorneaE/android-base-ui-compose/blob/main/base-ui/src/main/java/com/fphoenixcorneae/baseui/graphics/path/SimplePath.kt)导五角星圆角
   <br>
   致谢：[Android 多边形导圆角（Path画折线导圆角）](https://blog.csdn.net/liuyu0915/article/details/131721872)
 
