@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.fphoenixcorneae.baseui.system.rememberSystemUiController
 
 /**
  * 系统ui脚手架，适配状态栏、底部导航栏

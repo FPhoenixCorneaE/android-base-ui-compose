@@ -1,9 +1,6 @@
 package com.fphoenixcorneae.baseui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -19,6 +16,7 @@ import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -30,12 +28,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInput
@@ -92,81 +92,81 @@ fun BasicNumberKeyboard(
         "0" to KeyboardKeyType.Number,
         "Delete" to KeyboardKeyType.Delete,
     )
-    AnimatedVisibility(
-        modifier = modifier,
-        visible = visible,
-        enter = slideInVertically(animationSpec = tween(), initialOffsetY = { it }),
-        exit = slideOutVertically(animationSpec = tween(), targetOffsetY = { it }),
-    ) {
-        BoxWithConstraints {
-            val startPadding = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
-            val topPadding = contentPadding.calculateTopPadding()
-            val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
-            val bottomPadding = contentPadding.calculateBottomPadding()
-            val keyWidth = (maxWidth - startPadding - endPadding - horizontalSpace * 2) / 3
-            val keyboardHeight = topPadding + bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-                modifier = Modifier
-                    .height(keyboardHeight)
-                    .background(color = backgroundColor),
-                contentPadding = contentPadding,
-                horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
-                verticalArrangement = Arrangement.spacedBy(verticalSpace),
-                userScrollEnabled = false,
-            ) {
-                items(
-                    items = keys,
-                    contentType = {
-                        it.second
-                    },
-                ) { key ->
-                    var isPressed by remember { mutableStateOf(false) }
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(cornerRadius))
-                            .background(color = if (isPressed) pressedColor else normalColor)
-                            .aspectRatio(ratio = aspectRatio)
-                            .pointerInput(isPressed) {
-                                awaitPointerEventScope {
-                                    isPressed = if (isPressed) {
-                                        waitForUpOrCancellation()
-                                        onKeyClick(key)
-                                        false
-                                    } else {
-                                        awaitFirstDown(requireUnconsumed = false)
-                                        true
-                                    }
+    BoxWithConstraints(modifier.clipToBounds()) {
+        val startPadding = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
+        val topPadding = contentPadding.calculateTopPadding()
+        val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
+        val bottomPadding = contentPadding.calculateBottomPadding()
+        val keyWidth = (maxWidth - startPadding - endPadding - horizontalSpace * 2) / 3
+        val keyboardHeight =
+            topPadding + bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
+        val offsetY by animateDpAsState(
+            targetValue = if (visible) 0.dp else keyboardHeight,
+            label = "OffsetY",
+        )
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(3),
+            modifier = Modifier
+                .offset(y = offsetY)
+                .height(keyboardHeight)
+                .background(color = backgroundColor),
+
+            contentPadding = contentPadding,
+            horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
+            verticalArrangement = Arrangement.spacedBy(verticalSpace),
+            userScrollEnabled = false,
+        ) {
+            items(
+                items = keys,
+                contentType = {
+                    it.second
+                },
+            ) { key ->
+                var isPressed by remember { mutableStateOf(false) }
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(cornerRadius))
+                        .background(color = if (isPressed) pressedColor else normalColor)
+                        .aspectRatio(ratio = aspectRatio)
+                        .pointerInput(isPressed) {
+                            awaitPointerEventScope {
+                                isPressed = if (isPressed) {
+                                    waitForUpOrCancellation()
+                                    onKeyClick(key)
+                                    false
+                                } else {
+                                    awaitFirstDown(requireUnconsumed = false)
+                                    true
                                 }
-                            },
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        when (key.second) {
-                            KeyboardKeyType.Hide -> {
-                                Image(
-                                    painter = painterHide,
-                                    contentDescription = key.first,
-                                    modifier = Modifier.size(keyWidth / 4)
-                                )
                             }
+                        },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    when (key.second) {
+                        KeyboardKeyType.Hide -> {
+                            Image(
+                                painter = painterHide,
+                                contentDescription = key.first,
+                                modifier = Modifier.size(keyWidth / 4)
+                            )
+                        }
 
-                            KeyboardKeyType.Delete -> {
-                                Image(
-                                    painter = painterDelete,
-                                    contentDescription = key.first,
-                                    modifier = Modifier.size(keyWidth / 4)
-                                )
-                            }
+                        KeyboardKeyType.Delete -> {
+                            Image(
+                                painter = painterDelete,
+                                contentDescription = key.first,
+                                modifier = Modifier.size(keyWidth / 4)
+                            )
+                        }
 
-                            else -> {
-                                Text(
-                                    text = key.first,
-                                    color = fontColor,
-                                    fontSize = fontSize,
-                                    fontWeight = fontWeight,
-                                    fontFamily = fontFamily,
-                                )
-                            }
+                        else -> {
+                            Text(
+                                text = key.first,
+                                color = fontColor,
+                                fontSize = fontSize,
+                                fontWeight = fontWeight,
+                                fontFamily = fontFamily,
+                            )
                         }
                     }
                 }
@@ -203,101 +203,101 @@ fun RandomNumberKeyboard(
     painterDelete: Painter = painterResource(id = R.drawable.ic_keyboard_delete),
     onKeyClick: (Pair<String, KeyboardKeyType>) -> Unit = { },
 ) {
-    val keys = mutableListOf(
-        "1" to KeyboardKeyType.Number,
-        "2" to KeyboardKeyType.Number,
-        "3" to KeyboardKeyType.Number,
-        "4" to KeyboardKeyType.Number,
-        "5" to KeyboardKeyType.Number,
-        "6" to KeyboardKeyType.Number,
-        "7" to KeyboardKeyType.Number,
-        "8" to KeyboardKeyType.Number,
-        "9" to KeyboardKeyType.Number,
-        "0" to KeyboardKeyType.Number,
-    ).shuffled().toMutableList().apply {
-        addAll(
-            mutableListOf(
-                "Hide" to KeyboardKeyType.Hide,
-                "Delete" to KeyboardKeyType.Delete,
+    val keys = remember { mutableStateListOf<Pair<String, KeyboardKeyType>>() }
+    if (visible) {
+        keys.clear()
+        mutableListOf(
+            "1" to KeyboardKeyType.Number,
+            "2" to KeyboardKeyType.Number,
+            "3" to KeyboardKeyType.Number,
+            "4" to KeyboardKeyType.Number,
+            "5" to KeyboardKeyType.Number,
+            "6" to KeyboardKeyType.Number,
+            "7" to KeyboardKeyType.Number,
+            "8" to KeyboardKeyType.Number,
+            "9" to KeyboardKeyType.Number,
+            "0" to KeyboardKeyType.Number,
+        ).asSequence().shuffled().toMutableList().apply {
+            addAll(
+                mutableListOf(
+                    "Hide" to KeyboardKeyType.Hide,
+                    "Delete" to KeyboardKeyType.Delete,
+                )
             )
-        )
-        Collections.swap(this, 9, 10)
+            Collections.swap(this, 9, 10)
+        }.also { keys.addAll(it) }
     }
-    AnimatedVisibility(
-        modifier = modifier,
-        visible = visible,
-        enter = slideInVertically(animationSpec = tween(), initialOffsetY = { it }),
-        exit = slideOutVertically(animationSpec = tween(), targetOffsetY = { it }),
-    ) {
-        BoxWithConstraints {
-            val startPadding = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
-            val topPadding = contentPadding.calculateTopPadding()
-            val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
-            val bottomPadding = contentPadding.calculateBottomPadding()
-            val keyWidth = (maxWidth - startPadding - endPadding - horizontalSpace * 2) / 3
-            val keyboardHeight = topPadding + bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-                modifier = Modifier
-                    .height(keyboardHeight)
-                    .background(color = backgroundColor),
-                contentPadding = contentPadding,
-                horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
-                verticalArrangement = Arrangement.spacedBy(verticalSpace),
-                userScrollEnabled = false,
-            ) {
-                items(
-                    items = keys,
-                    contentType = {
-                        it.second
-                    },
-                ) { key ->
-                    var isPressed by remember { mutableStateOf(false) }
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(cornerRadius))
-                            .background(color = if (isPressed) pressedColor else normalColor)
-                            .aspectRatio(ratio = aspectRatio)
-                            .pointerInput(isPressed) {
-                                awaitPointerEventScope {
-                                    isPressed = if (isPressed) {
-                                        waitForUpOrCancellation()
-                                        onKeyClick(key)
-                                        false
-                                    } else {
-                                        awaitFirstDown(requireUnconsumed = false)
-                                        true
-                                    }
+    BoxWithConstraints(modifier = modifier.clipToBounds()) {
+        val startPadding = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
+        val topPadding = contentPadding.calculateTopPadding()
+        val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
+        val bottomPadding = contentPadding.calculateBottomPadding()
+        val keyWidth = (maxWidth - startPadding - endPadding - horizontalSpace * 2) / 3
+        val keyboardHeight =
+            topPadding + bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
+        val offsetY by animateDpAsState(if (visible) 0.dp else keyboardHeight, label = "OffsetY")
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(3),
+            modifier = Modifier
+                .offset(y = offsetY)
+                .height(keyboardHeight)
+                .background(color = backgroundColor),
+            contentPadding = contentPadding,
+            horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
+            verticalArrangement = Arrangement.spacedBy(verticalSpace),
+            userScrollEnabled = false,
+        ) {
+            items(
+                items = keys,
+                contentType = {
+                    it.second
+                },
+            ) { key ->
+                var isPressed by remember { mutableStateOf(false) }
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(cornerRadius))
+                        .background(color = if (isPressed) pressedColor else normalColor)
+                        .aspectRatio(ratio = aspectRatio)
+                        .pointerInput(isPressed) {
+                            awaitPointerEventScope {
+                                isPressed = if (isPressed) {
+                                    waitForUpOrCancellation()
+                                    onKeyClick(key)
+                                    false
+                                } else {
+                                    awaitFirstDown(requireUnconsumed = false)
+                                    true
                                 }
-                            },
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        when (key.second) {
-                            KeyboardKeyType.Hide -> {
-                                Image(
-                                    painter = painterHide,
-                                    contentDescription = key.first,
-                                    modifier = Modifier.size(keyWidth / 4)
-                                )
                             }
+                        },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    when (key.second) {
+                        KeyboardKeyType.Hide -> {
+                            Image(
+                                painter = painterHide,
+                                contentDescription = key.first,
+                                modifier = Modifier.size(keyWidth / 4)
+                            )
+                        }
 
-                            KeyboardKeyType.Delete -> {
-                                Image(
-                                    painter = painterDelete,
-                                    contentDescription = key.first,
-                                    modifier = Modifier.size(keyWidth / 4)
-                                )
-                            }
+                        KeyboardKeyType.Delete -> {
+                            Image(
+                                painter = painterDelete,
+                                contentDescription = key.first,
+                                modifier = Modifier.size(keyWidth / 4)
+                            )
+                        }
 
-                            else -> {
-                                Text(
-                                    text = key.first,
-                                    color = fontColor,
-                                    fontSize = fontSize,
-                                    fontWeight = fontWeight,
-                                    fontFamily = fontFamily,
-                                )
-                            }
+                        else -> {
+                            Text(
+                                text = key.first,
+                                color = fontColor,
+                                fontSize = fontSize,
+                                fontWeight = fontWeight,
+                                fontFamily = fontFamily,
+                            )
                         }
                     }
                 }
@@ -351,96 +351,95 @@ fun IdCardNumberKeyboard(
         "Delete" to KeyboardKeyType.Delete,
         "完成" to KeyboardKeyType.Complete,
     )
-    AnimatedVisibility(
-        modifier = modifier,
-        visible = visible,
-        enter = slideInVertically(animationSpec = tween(), initialOffsetY = { it }),
-        exit = slideOutVertically(animationSpec = tween(), targetOffsetY = { it }),
-    ) {
-        BoxWithConstraints {
-            val startPadding = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
-            val topPadding = contentPadding.calculateTopPadding()
-            val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
-            val bottomPadding = contentPadding.calculateBottomPadding()
-            val keyWidth = (maxWidth - startPadding - endPadding - horizontalSpace * 2) / 3
-            val keyboardHeight = topPadding + bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
-            Column(modifier = Modifier.background(color = backgroundColor)) {
-                var isCompletePressed by remember { mutableStateOf(false) }
-                Text(
-                    text = keys.last().first,
-                    color = if (isCompletePressed) completePressedColor else completeNormalColor,
-                    fontSize = completeFontSize,
-                    fontWeight = fontWeight,
-                    fontFamily = fontFamily,
-                    modifier = Modifier
-                        .padding(top = topPadding, end = endPadding)
-                        .align(Alignment.End)
-                        .pointerInput(isCompletePressed) {
-                            awaitPointerEventScope {
-                                isCompletePressed = if (isCompletePressed) {
-                                    waitForUpOrCancellation()
-                                    onKeyClick(keys.last())
-                                    false
-                                } else {
-                                    awaitFirstDown(requireUnconsumed = false)
-                                    true
-                                }
+    BoxWithConstraints(modifier = modifier.clipToBounds()) {
+        val startPadding = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
+        val topPadding = contentPadding.calculateTopPadding()
+        val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
+        val bottomPadding = contentPadding.calculateBottomPadding()
+        val keyWidth = (maxWidth - startPadding - endPadding - horizontalSpace * 2) / 3
+        val keyboardHeight =
+            topPadding + bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
+        val offsetY by animateDpAsState(if (visible) 0.dp else maxHeight, label = "OffsetY")
+        Column(
+            modifier = Modifier
+                .offset(y = offsetY)
+                .background(color = backgroundColor)
+        ) {
+            var isCompletePressed by remember { mutableStateOf(false) }
+            Text(
+                text = keys.last().first,
+                color = if (isCompletePressed) completePressedColor else completeNormalColor,
+                fontSize = completeFontSize,
+                fontWeight = fontWeight,
+                fontFamily = fontFamily,
+                modifier = Modifier
+                    .padding(top = topPadding, end = endPadding)
+                    .align(Alignment.End)
+                    .pointerInput(isCompletePressed) {
+                        awaitPointerEventScope {
+                            isCompletePressed = if (isCompletePressed) {
+                                waitForUpOrCancellation()
+                                onKeyClick(keys.last())
+                                false
+                            } else {
+                                awaitFirstDown(requireUnconsumed = false)
+                                true
                             }
-                        },
-                )
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(3),
-                    modifier = Modifier
-                        .height(keyboardHeight),
-                    contentPadding = contentPadding,
-                    horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
-                    verticalArrangement = Arrangement.spacedBy(verticalSpace),
-                    userScrollEnabled = false,
-                ) {
-                    items(
-                        items = keys.subList(0, keys.size - 1),
-                        contentType = {
-                            it.second
-                        },
-                    ) { key ->
-                        var isPressed by remember { mutableStateOf(false) }
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(cornerRadius))
-                                .background(color = if (isPressed) pressedColor else normalColor)
-                                .aspectRatio(ratio = aspectRatio)
-                                .pointerInput(isPressed) {
-                                    awaitPointerEventScope {
-                                        isPressed = if (isPressed) {
-                                            waitForUpOrCancellation()
-                                            onKeyClick(key)
-                                            false
-                                        } else {
-                                            awaitFirstDown(requireUnconsumed = false)
-                                            true
-                                        }
+                        }
+                    },
+            )
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                modifier = Modifier
+                    .height(keyboardHeight),
+                contentPadding = contentPadding,
+                horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
+                verticalArrangement = Arrangement.spacedBy(verticalSpace),
+                userScrollEnabled = false,
+            ) {
+                items(
+                    items = keys.subList(0, keys.size - 1),
+                    contentType = {
+                        it.second
+                    },
+                ) { key ->
+                    var isPressed by remember { mutableStateOf(false) }
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(cornerRadius))
+                            .background(color = if (isPressed) pressedColor else normalColor)
+                            .aspectRatio(ratio = aspectRatio)
+                            .pointerInput(isPressed) {
+                                awaitPointerEventScope {
+                                    isPressed = if (isPressed) {
+                                        waitForUpOrCancellation()
+                                        onKeyClick(key)
+                                        false
+                                    } else {
+                                        awaitFirstDown(requireUnconsumed = false)
+                                        true
                                     }
-                                },
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            when (key.second) {
-                                KeyboardKeyType.Delete -> {
-                                    Image(
-                                        painter = painterDelete,
-                                        contentDescription = key.first,
-                                        modifier = Modifier.size(keyWidth / 4)
-                                    )
                                 }
+                            },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        when (key.second) {
+                            KeyboardKeyType.Delete -> {
+                                Image(
+                                    painter = painterDelete,
+                                    contentDescription = key.first,
+                                    modifier = Modifier.size(keyWidth / 4)
+                                )
+                            }
 
-                                else -> {
-                                    Text(
-                                        text = key.first,
-                                        color = fontColor,
-                                        fontSize = fontSize,
-                                        fontWeight = fontWeight,
-                                        fontFamily = fontFamily,
-                                    )
-                                }
+                            else -> {
+                                Text(
+                                    text = key.first,
+                                    color = fontColor,
+                                    fontSize = fontSize,
+                                    fontWeight = fontWeight,
+                                    fontFamily = fontFamily,
+                                )
                             }
                         }
                     }
@@ -498,42 +497,81 @@ fun TitleNumberKeyboard(
         "Delete" to KeyboardKeyType.Delete,
         "完成" to KeyboardKeyType.Complete,
     )
-    AnimatedVisibility(
-        modifier = modifier,
-        visible = visible,
-        enter = slideInVertically(animationSpec = tween(), initialOffsetY = { it }),
-        exit = slideOutVertically(animationSpec = tween(), targetOffsetY = { it }),
-    ) {
-        BoxWithConstraints {
-            val startPadding = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
-            val topPadding = contentPadding.calculateTopPadding()
-            val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
-            val bottomPadding = contentPadding.calculateBottomPadding()
-            val keyWidth = (maxWidth - startPadding - endPadding - horizontalSpace * 2) / 3
-            val keyboardHeight = bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
-            Column(modifier = Modifier.background(color = backgroundColor)) {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = title,
-                        color = titleColor,
-                        fontSize = titleFontSize,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                    var isCompletePressed by remember { mutableStateOf(false) }
-                    Text(
-                        text = keys.last().first,
-                        color = if (isCompletePressed) completePressedColor else completeNormalColor,
-                        fontSize = completeFontSize,
-                        fontWeight = fontWeight,
-                        fontFamily = fontFamily,
+    BoxWithConstraints(modifier = modifier.clipToBounds()) {
+        val startPadding = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
+        val topPadding = contentPadding.calculateTopPadding()
+        val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
+        val bottomPadding = contentPadding.calculateBottomPadding()
+        val keyWidth = (maxWidth - startPadding - endPadding - horizontalSpace * 2) / 3
+        val keyboardHeight = bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
+        val offsetY by animateDpAsState(if (visible) 0.dp else maxHeight, label = "OffsetY")
+        Column(
+            modifier = Modifier
+                .offset(y = offsetY)
+                .background(color = backgroundColor),
+        ) {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = title,
+                    color = titleColor,
+                    fontSize = titleFontSize,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+                var isCompletePressed by remember { mutableStateOf(false) }
+                Text(
+                    text = keys.last().first,
+                    color = if (isCompletePressed) completePressedColor else completeNormalColor,
+                    fontSize = completeFontSize,
+                    fontWeight = fontWeight,
+                    fontFamily = fontFamily,
+                    modifier = Modifier
+                        .padding(top = topPadding, end = endPadding, bottom = bottomPadding)
+                        .align(Alignment.TopEnd)
+                        .pointerInput(isCompletePressed) {
+                            awaitPointerEventScope {
+                                isCompletePressed = if (isCompletePressed) {
+                                    waitForUpOrCancellation()
+                                    onKeyClick(keys.last())
+                                    false
+                                } else {
+                                    awaitFirstDown(requireUnconsumed = false)
+                                    true
+                                }
+                            }
+                        },
+                )
+            }
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                modifier = Modifier
+                    .height(keyboardHeight),
+                contentPadding = PaddingValues(
+                    start = startPadding,
+                    top = 0.dp,
+                    end = endPadding,
+                    bottom = bottomPadding,
+                ),
+                horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
+                verticalArrangement = Arrangement.spacedBy(verticalSpace),
+                userScrollEnabled = false,
+            ) {
+                items(
+                    items = keys.subList(0, keys.size - 1),
+                    contentType = {
+                        it.second
+                    },
+                ) { key ->
+                    var isPressed by remember { mutableStateOf(false) }
+                    Box(
                         modifier = Modifier
-                            .padding(top = topPadding, end = endPadding, bottom = bottomPadding)
-                            .align(Alignment.TopEnd)
-                            .pointerInput(isCompletePressed) {
+                            .clip(RoundedCornerShape(cornerRadius))
+                            .background(color = if (isPressed) pressedColor else normalColor)
+                            .aspectRatio(ratio = aspectRatio)
+                            .pointerInput(isPressed) {
                                 awaitPointerEventScope {
-                                    isCompletePressed = if (isCompletePressed) {
+                                    isPressed = if (isPressed) {
                                         waitForUpOrCancellation()
-                                        onKeyClick(keys.last())
+                                        onKeyClick(key)
                                         false
                                     } else {
                                         awaitFirstDown(requireUnconsumed = false)
@@ -541,66 +579,25 @@ fun TitleNumberKeyboard(
                                     }
                                 }
                             },
-                    )
-                }
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(3),
-                    modifier = Modifier
-                        .height(keyboardHeight),
-                    contentPadding = PaddingValues(
-                        start = startPadding,
-                        top = 0.dp,
-                        end = endPadding,
-                        bottom = bottomPadding,
-                    ),
-                    horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
-                    verticalArrangement = Arrangement.spacedBy(verticalSpace),
-                    userScrollEnabled = false,
-                ) {
-                    items(
-                        items = keys.subList(0, keys.size - 1),
-                        contentType = {
-                            it.second
-                        },
-                    ) { key ->
-                        var isPressed by remember { mutableStateOf(false) }
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(cornerRadius))
-                                .background(color = if (isPressed) pressedColor else normalColor)
-                                .aspectRatio(ratio = aspectRatio)
-                                .pointerInput(isPressed) {
-                                    awaitPointerEventScope {
-                                        isPressed = if (isPressed) {
-                                            waitForUpOrCancellation()
-                                            onKeyClick(key)
-                                            false
-                                        } else {
-                                            awaitFirstDown(requireUnconsumed = false)
-                                            true
-                                        }
-                                    }
-                                },
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            when (key.second) {
-                                KeyboardKeyType.Delete -> {
-                                    Image(
-                                        painter = painterDelete,
-                                        contentDescription = key.first,
-                                        modifier = Modifier.size(keyWidth / 4)
-                                    )
-                                }
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        when (key.second) {
+                            KeyboardKeyType.Delete -> {
+                                Image(
+                                    painter = painterDelete,
+                                    contentDescription = key.first,
+                                    modifier = Modifier.size(keyWidth / 4)
+                                )
+                            }
 
-                                else -> {
-                                    Text(
-                                        text = key.first,
-                                        color = fontColor,
-                                        fontSize = fontSize,
-                                        fontWeight = fontWeight,
-                                        fontFamily = fontFamily,
-                                    )
-                                }
+                            else -> {
+                                Text(
+                                    text = key.first,
+                                    color = fontColor,
+                                    fontSize = fontSize,
+                                    fontWeight = fontWeight,
+                                    fontFamily = fontFamily,
+                                )
                             }
                         }
                     }
@@ -655,133 +652,145 @@ fun SidebarNumberKeyboard(
         "Delete" to KeyboardKeyType.Delete,
         "完成" to KeyboardKeyType.Complete,
     )
-    AnimatedVisibility(
-        modifier = modifier,
-        visible = visible,
-        enter = slideInVertically(animationSpec = tween(), initialOffsetY = { it }),
-        exit = slideOutVertically(animationSpec = tween(), targetOffsetY = { it }),
+    var background by remember { mutableStateOf(Color.Transparent) }
+    if (!visible) {
+        background = Color.Transparent
+    }
+    BoxWithConstraints(
+        modifier = modifier
+            .clipToBounds()
+            .background(color = background),
     ) {
-        BoxWithConstraints(modifier = Modifier.background(color = backgroundColor)) {
-            val startPadding = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
-            val topPadding = contentPadding.calculateTopPadding()
-            val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
-            val bottomPadding = contentPadding.calculateBottomPadding()
-            val keyWidth = (maxWidth - startPadding - endPadding - horizontalSpace * 3) / 4
-            val keyboardHeight = topPadding + bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
-            Row(
+        val startPadding = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
+        val topPadding = contentPadding.calculateTopPadding()
+        val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
+        val bottomPadding = contentPadding.calculateBottomPadding()
+        val keyWidth = (maxWidth - startPadding - endPadding - horizontalSpace * 3) / 4
+        val keyboardHeight =
+            topPadding + bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
+        val offsetY by animateDpAsState(
+            if (visible) 0.dp else maxHeight,
+            label = "OffsetY",
+            finishedListener = {
+                if (visible) {
+                    background = backgroundColor
+                }
+            },
+        )
+        Row(
+            modifier = Modifier
+                .offset(y = offsetY)
+                .padding(end = endPadding)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
                 modifier = Modifier
-                    .padding(end = endPadding)
-                    .fillMaxWidth(),
+                    .width(startPadding + keyWidth * 3 + horizontalSpace * 2)
+                    .height(keyboardHeight),
+                contentPadding = PaddingValues(
+                    start = startPadding,
+                    top = topPadding,
+                    end = 0.dp,
+                    bottom = bottomPadding,
+                ),
                 horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalArrangement = Arrangement.spacedBy(verticalSpace),
+                userScrollEnabled = false,
             ) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(3),
-                    modifier = Modifier
-                        .width(startPadding + keyWidth * 3 + horizontalSpace * 2)
-                        .height(keyboardHeight),
-                    contentPadding = PaddingValues(
-                        start = startPadding,
-                        top = topPadding,
-                        end = 0.dp,
-                        bottom = bottomPadding,
-                    ),
-                    horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
-                    verticalArrangement = Arrangement.spacedBy(verticalSpace),
-                    userScrollEnabled = false,
-                ) {
-                    items(
-                        items = keys.subList(0, keys.size - 2),
-                        span = {
-                            if ("0" == it.first) {
-                                GridItemSpan(2)
-                            } else {
-                                GridItemSpan(1)
-                            }
-                        },
-                        contentType = {
-                            it.second
-                        },
-                    ) { key ->
-                        var isPressed by remember { mutableStateOf(false) }
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(cornerRadius))
-                                .background(color = if (isPressed) pressedColor else normalColor)
-                                .width(width = keyWidth)
-                                .height(height = keyWidth / aspectRatio)
-                                .pointerInput(isPressed) {
-                                    awaitPointerEventScope {
-                                        isPressed = if (isPressed) {
-                                            waitForUpOrCancellation()
-                                            onKeyClick(key)
-                                            false
-                                        } else {
-                                            awaitFirstDown(requireUnconsumed = false)
-                                            true
-                                        }
-                                    }
-                                },
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(
-                                text = key.first,
-                                color = fontColor,
-                                fontSize = fontSize,
-                                fontWeight = fontWeight,
-                                fontFamily = fontFamily,
-                            )
+                items(
+                    items = keys.subList(0, keys.size - 2),
+                    span = {
+                        if ("0" == it.first) {
+                            GridItemSpan(2)
+                        } else {
+                            GridItemSpan(1)
                         }
+                    },
+                    contentType = {
+                        it.second
+                    },
+                ) { key ->
+                    var isPressed by remember { mutableStateOf(false) }
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(cornerRadius))
+                            .background(color = if (isPressed) pressedColor else normalColor)
+                            .width(width = keyWidth)
+                            .height(height = keyWidth / aspectRatio)
+                            .pointerInput(isPressed) {
+                                awaitPointerEventScope {
+                                    isPressed = if (isPressed) {
+                                        waitForUpOrCancellation()
+                                        onKeyClick(key)
+                                        false
+                                    } else {
+                                        awaitFirstDown(requireUnconsumed = false)
+                                        true
+                                    }
+                                }
+                            },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            text = key.first,
+                            color = fontColor,
+                            fontSize = fontSize,
+                            fontWeight = fontWeight,
+                            fontFamily = fontFamily,
+                        )
                     }
                 }
-                Column(
-                    modifier = Modifier
-                        .width(keyWidth)
-                        .height(keyboardHeight)
-                        .padding(top = topPadding, bottom = bottomPadding),
-                    verticalArrangement = Arrangement.spacedBy(verticalSpace),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    keys.subList(keys.size - 2, keys.size).forEach { key ->
-                        var isPressed by remember { mutableStateOf(false) }
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(cornerRadius))
-                                .background(color = if (key.second == KeyboardKeyType.Delete) if (isPressed) pressedColor else normalColor else if (isPressed) completePressedColor else completeNormalColor)
-                                .fillMaxWidth()
-                                .weight(1f)
-                                .pointerInput(isPressed) {
-                                    awaitPointerEventScope {
-                                        isPressed = if (isPressed) {
-                                            waitForUpOrCancellation()
-                                            onKeyClick(key)
-                                            false
-                                        } else {
-                                            awaitFirstDown(requireUnconsumed = false)
-                                            true
-                                        }
+            }
+            Column(
+                modifier = Modifier
+                    .width(keyWidth)
+                    .height(keyboardHeight)
+                    .padding(top = topPadding, bottom = bottomPadding),
+                verticalArrangement = Arrangement.spacedBy(verticalSpace),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                keys.subList(keys.size - 2, keys.size).forEach { key ->
+                    var isPressed by remember { mutableStateOf(false) }
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(cornerRadius))
+                            .background(color = if (key.second == KeyboardKeyType.Delete) if (isPressed) pressedColor else normalColor else if (isPressed) completePressedColor else completeNormalColor)
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .pointerInput(isPressed) {
+                                awaitPointerEventScope {
+                                    isPressed = if (isPressed) {
+                                        waitForUpOrCancellation()
+                                        onKeyClick(key)
+                                        false
+                                    } else {
+                                        awaitFirstDown(requireUnconsumed = false)
+                                        true
                                     }
-                                },
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            when (key.second) {
-                                KeyboardKeyType.Delete -> {
-                                    Image(
-                                        painter = painterDelete,
-                                        contentDescription = key.first,
-                                        modifier = Modifier.size(keyWidth / 2.5f)
-                                    )
                                 }
+                            },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        when (key.second) {
+                            KeyboardKeyType.Delete -> {
+                                Image(
+                                    painter = painterDelete,
+                                    contentDescription = key.first,
+                                    modifier = Modifier.size(keyWidth / 2.5f)
+                                )
+                            }
 
-                                else -> {
-                                    Text(
-                                        text = key.first,
-                                        color = Color.White,
-                                        fontSize = completeFontSize,
-                                        fontWeight = fontWeight,
-                                        fontFamily = fontFamily,
-                                    )
-                                }
+                            else -> {
+                                Text(
+                                    text = key.first,
+                                    color = Color.White,
+                                    fontSize = completeFontSize,
+                                    fontWeight = fontWeight,
+                                    fontFamily = fontFamily,
+                                )
                             }
                         }
                     }
@@ -837,129 +846,141 @@ fun NumberKeyboardWithKeys(
         "Delete" to KeyboardKeyType.Delete,
         "完成" to KeyboardKeyType.Complete,
     )
-    AnimatedVisibility(
-        modifier = modifier,
-        visible = visible,
-        enter = slideInVertically(animationSpec = tween(), initialOffsetY = { it }),
-        exit = slideOutVertically(animationSpec = tween(), targetOffsetY = { it }),
+    var background by remember { mutableStateOf(Color.Transparent) }
+    if (!visible) {
+        background = Color.Transparent
+    }
+    BoxWithConstraints(
+        modifier = modifier
+            .clipToBounds()
+            .background(color = background),
     ) {
-        BoxWithConstraints(modifier = Modifier.background(color = backgroundColor)) {
-            val startPadding = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
-            val topPadding = contentPadding.calculateTopPadding()
-            val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
-            val bottomPadding = contentPadding.calculateBottomPadding()
-            val keyWidth = (maxWidth - startPadding - endPadding - horizontalSpace * 3) / 4
-            val keyboardHeight = topPadding + bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
-            Row(
+        val startPadding = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
+        val topPadding = contentPadding.calculateTopPadding()
+        val endPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
+        val bottomPadding = contentPadding.calculateBottomPadding()
+        val keyWidth = (maxWidth - startPadding - endPadding - horizontalSpace * 3) / 4
+        val keyboardHeight =
+            topPadding + bottomPadding + keyWidth / aspectRatio * 4 + verticalSpace * 3
+        val offsetY by animateDpAsState(
+            if (visible) 0.dp else maxHeight,
+            label = "OffsetY",
+            finishedListener = {
+                if (visible) {
+                    background = backgroundColor
+                }
+            },
+        )
+        Row(
+            modifier = Modifier
+                .offset(y = offsetY)
+                .padding(end = endPadding)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
                 modifier = Modifier
-                    .padding(end = endPadding)
-                    .fillMaxWidth(),
+                    .width(startPadding + keyWidth * 3 + horizontalSpace * 2)
+                    .height(keyboardHeight),
+                contentPadding = PaddingValues(
+                    start = startPadding,
+                    top = topPadding,
+                    end = 0.dp,
+                    bottom = bottomPadding,
+                ),
                 horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalArrangement = Arrangement.spacedBy(verticalSpace),
+                userScrollEnabled = false,
             ) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(3),
-                    modifier = Modifier
-                        .width(startPadding + keyWidth * 3 + horizontalSpace * 2)
-                        .height(keyboardHeight),
-                    contentPadding = PaddingValues(
-                        start = startPadding,
-                        top = topPadding,
-                        end = 0.dp,
-                        bottom = bottomPadding,
-                    ),
-                    horizontalArrangement = Arrangement.spacedBy(horizontalSpace),
-                    verticalArrangement = Arrangement.spacedBy(verticalSpace),
-                    userScrollEnabled = false,
-                ) {
-                    items(
-                        items = keys.subList(0, keys.size - 2),
-                        span = {
-                            GridItemSpan(1)
-                        },
-                        contentType = {
-                            it.second
-                        },
-                    ) { key ->
-                        var isPressed by remember { mutableStateOf(false) }
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(cornerRadius))
-                                .background(color = if (isPressed) pressedColor else normalColor)
-                                .width(width = keyWidth)
-                                .height(height = keyWidth / aspectRatio)
-                                .pointerInput(isPressed) {
-                                    awaitPointerEventScope {
-                                        isPressed = if (isPressed) {
-                                            waitForUpOrCancellation()
-                                            onKeyClick(key)
-                                            false
-                                        } else {
-                                            awaitFirstDown(requireUnconsumed = false)
-                                            true
-                                        }
+                items(
+                    items = keys.subList(0, keys.size - 2),
+                    span = {
+                        GridItemSpan(1)
+                    },
+                    contentType = {
+                        it.second
+                    },
+                ) { key ->
+                    var isPressed by remember { mutableStateOf(false) }
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(cornerRadius))
+                            .background(color = if (isPressed) pressedColor else normalColor)
+                            .width(width = keyWidth)
+                            .height(height = keyWidth / aspectRatio)
+                            .pointerInput(isPressed) {
+                                awaitPointerEventScope {
+                                    isPressed = if (isPressed) {
+                                        waitForUpOrCancellation()
+                                        onKeyClick(key)
+                                        false
+                                    } else {
+                                        awaitFirstDown(requireUnconsumed = false)
+                                        true
                                     }
-                                },
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(
-                                text = key.first,
-                                color = fontColor,
-                                fontSize = fontSize,
-                                fontWeight = fontWeight,
-                                fontFamily = fontFamily,
-                            )
-                        }
+                                }
+                            },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            text = key.first,
+                            color = fontColor,
+                            fontSize = fontSize,
+                            fontWeight = fontWeight,
+                            fontFamily = fontFamily,
+                        )
                     }
                 }
-                Column(
-                    modifier = Modifier
-                        .width(keyWidth)
-                        .height(keyboardHeight)
-                        .padding(top = topPadding, bottom = bottomPadding),
-                    verticalArrangement = Arrangement.spacedBy(verticalSpace),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    keys.subList(keys.size - 2, keys.size).forEach { key ->
-                        var isPressed by remember { mutableStateOf(false) }
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(cornerRadius))
-                                .background(color = if (key.second == KeyboardKeyType.Delete) if (isPressed) pressedColor else normalColor else if (isPressed) completePressedColor else completeNormalColor)
-                                .fillMaxWidth()
-                                .weight(1f)
-                                .pointerInput(isPressed) {
-                                    awaitPointerEventScope {
-                                        isPressed = if (isPressed) {
-                                            waitForUpOrCancellation()
-                                            onKeyClick(key)
-                                            false
-                                        } else {
-                                            awaitFirstDown(requireUnconsumed = false)
-                                            true
-                                        }
+            }
+            Column(
+                modifier = Modifier
+                    .width(keyWidth)
+                    .height(keyboardHeight)
+                    .padding(top = topPadding, bottom = bottomPadding),
+                verticalArrangement = Arrangement.spacedBy(verticalSpace),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                keys.subList(keys.size - 2, keys.size).forEach { key ->
+                    var isPressed by remember { mutableStateOf(false) }
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(cornerRadius))
+                            .background(color = if (key.second == KeyboardKeyType.Delete) if (isPressed) pressedColor else normalColor else if (isPressed) completePressedColor else completeNormalColor)
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .pointerInput(isPressed) {
+                                awaitPointerEventScope {
+                                    isPressed = if (isPressed) {
+                                        waitForUpOrCancellation()
+                                        onKeyClick(key)
+                                        false
+                                    } else {
+                                        awaitFirstDown(requireUnconsumed = false)
+                                        true
                                     }
-                                },
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            when (key.second) {
-                                KeyboardKeyType.Delete -> {
-                                    Image(
-                                        painter = painterDelete,
-                                        contentDescription = key.first,
-                                        modifier = Modifier.size(keyWidth / 2.5f)
-                                    )
                                 }
+                            },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        when (key.second) {
+                            KeyboardKeyType.Delete -> {
+                                Image(
+                                    painter = painterDelete,
+                                    contentDescription = key.first,
+                                    modifier = Modifier.size(keyWidth / 2.5f)
+                                )
+                            }
 
-                                else -> {
-                                    Text(
-                                        text = key.first,
-                                        color = Color.White,
-                                        fontSize = completeFontSize,
-                                        fontWeight = fontWeight,
-                                        fontFamily = fontFamily,
-                                    )
-                                }
+                            else -> {
+                                Text(
+                                    text = key.first,
+                                    color = Color.White,
+                                    fontSize = completeFontSize,
+                                    fontWeight = fontWeight,
+                                    fontFamily = fontFamily,
+                                )
                             }
                         }
                     }

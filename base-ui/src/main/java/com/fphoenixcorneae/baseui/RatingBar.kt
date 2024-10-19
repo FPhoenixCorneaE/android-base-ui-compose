@@ -1,6 +1,7 @@
 package com.fphoenixcorneae.baseui
 
 import android.view.MotionEvent
+import androidx.annotation.FloatRange
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -45,6 +46,7 @@ fun RatingBar(
     numStars: Int = 5,
     space: Dp = 8.dp,
     rating: Float = 3f,
+    @FloatRange(from = 0.1, to = 1.0) ratingStep: Float = 0.1f,
     backgroundColor: Color = Color.Gray,
     filledColor: Color = Color.Red,
     borderWidth: Dp = 0.dp,
@@ -77,11 +79,24 @@ fun RatingBar(
                                 deviateRating
                             }
                             realRating = BigDecimal(realRating.toString())
-                                .setScale(/* newScale = */ 1, /* roundingMode = */ RoundingMode.HALF_UP)
+                                .setScale(
+                                    /* newScale = */ 1,
+                                    /* roundingMode = */ RoundingMode.HALF_UP,
+                                )
                                 .toFloat()
-                            mutableRating = realRating
-                            recomposeScope.invalidate()
-                            onRatingChanged?.invoke(realRating)
+                            if ((realRating * 10).toInt() % (ratingStep * 10).toInt() == 0 && mutableRating != realRating) {
+                                mutableRating = realRating
+                                recomposeScope.invalidate()
+                                onRatingChanged?.invoke(realRating)
+                            } else if (realRating < floor(realRating) + ratingStep && mutableRating != floor(
+                                    realRating
+                                )
+                            ) {
+                                // 点击星星之间的空隙
+                                mutableRating = floor(realRating)
+                                recomposeScope.invalidate()
+                                onRatingChanged?.invoke(realRating)
+                            }
                         }
 
                         else -> {}

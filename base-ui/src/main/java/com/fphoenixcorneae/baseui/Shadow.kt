@@ -1,18 +1,22 @@
 package com.fphoenixcorneae.baseui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
@@ -108,11 +112,11 @@ fun ShadowShape.all(
 
 /**
  * 阴影Layout
- * 不支持圆角,在Modifier中设置圆角会导致无作用
  * 以子控件的大小为测试，请在子控件中设置padding及长宽
  * @param shadowColor [Color] 绘制阴影颜色
  * @param elevation [ShadowElevation] 绘制阴影范围
- * @param shape [Dp] 绘制圆角
+ * @param borderRadius [Dp] 阴影便捷圆角
+ * @param shadowRadius [Dp] 阴影圆角
  * @param offsetX [Dp] 偏移X轴
  * @param offsetY [Dp] 偏移Y轴
  * @param content (slot) 填充内容
@@ -123,14 +127,15 @@ fun ShadowLayout(
     modifier: Modifier = Modifier,
     shadowColor: Color = Color(0xFFD3DBF9),
     elevation: ShadowElevation = ShadowElevation(),
-    shape: Dp = 10.dp,
+    borderRadius: Dp = 8.dp,
+    shadowRadius: Dp = 8.dp,
     offsetX: Dp = 0.dp,
     offsetY: Dp = 0.dp,
     alpha: Float = 0.5f,
-    content: @Composable ColumnScope.() -> Unit,
+    content: @Composable BoxScope.() -> Unit,
 ) {
-    Card(
-        modifier = modifier
+    Box(
+        modifier = Modifier
             .padding(
                 top = elevation.top,
                 bottom = elevation.bottom,
@@ -140,19 +145,15 @@ fun ShadowLayout(
             .drawColoredShadow(
                 shadowColor,
                 alpha,
-                borderRadius = shape,
-                shadowRadius = shape,
+                borderRadius = borderRadius,
+                shadowRadius = shadowRadius,
                 offsetX = offsetX,
                 offsetY = offsetY,
-                roundedRect = true
-            ),
-        elevation = CardDefaults.cardElevation(),
-        shape = RoundedCornerShape(0.dp),
-        content = content,
-        colors = CardDefaults.cardColors(
-            containerColor = Color.Transparent
-        ),
-    )
+            )
+            .then(modifier),
+    ) {
+        content()
+    }
 }
 
 /**
@@ -163,7 +164,6 @@ fun ShadowLayout(
  * @param shadowRadius 阴影圆角
  * @param offsetX 偏移X轴
  * @param offsetY 偏移Y轴
- * @param roundedRect 是否绘制圆角就行
  */
 fun Modifier.drawColoredShadow(
     color: Color,
@@ -172,7 +172,6 @@ fun Modifier.drawColoredShadow(
     shadowRadius: Dp = 0.dp,
     offsetX: Dp = 0.dp,
     offsetY: Dp = 0.dp,
-    roundedRect: Boolean = true,
 ) = this.drawBehind {
     /**将颜色转换为Argb的Int类型*/
     val transparentColor = color.copy(alpha = .0f).toArgb()
@@ -197,8 +196,8 @@ fun Modifier.drawColoredShadow(
             0f,
             this.size.width,
             this.size.height,
-            if (roundedRect) this.size.height / 2 else borderRadius.toPx(),
-            if (roundedRect) this.size.height / 2 else borderRadius.toPx(),
+            borderRadius.toPx(),
+            borderRadius.toPx(),
             paint
         )
     }
@@ -207,21 +206,38 @@ fun Modifier.drawColoredShadow(
 @Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
 @Composable
 fun PreviewLineShadow() {
-    Box(
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(30.dp),
-        contentAlignment = Alignment.Center,
+            .fillMaxSize()
+            .background(color = Color(0xfff5f5f5))
+            .padding(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Divider(
-            color = Color.Black.copy(0.05f),
+        HorizontalDivider(
             modifier = Modifier.drawColoredShadow(
-                color = Color.Black,
-                alpha = 0.05f,
-                offsetY = (-1.6).dp,
-                shadowRadius = 4.dp,
+                color = Color.Red,
+                alpha = 0.5f,
+                offsetX = 0.dp,
+                offsetY = (-4).dp,
+                shadowRadius = 8.dp,
             ),
             thickness = 2.dp,
+            color = Color.Black.copy(0.05f)
         )
+        Spacer(modifier = Modifier.height(20.dp))
+        ShadowLayout(
+            modifier = Modifier.clip(RoundedCornerShape(8.dp)),
+            shadowColor = Color.Yellow,
+            offsetX = 8.dp,
+            offsetY = 8.dp,
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+                    .background(color = Color.White)
+            )
+        }
     }
 }
