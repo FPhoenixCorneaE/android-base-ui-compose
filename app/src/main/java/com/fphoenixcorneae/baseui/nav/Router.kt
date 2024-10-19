@@ -23,6 +23,7 @@ import com.fphoenixcorneae.baseui.ui.basic.TriangleScreen
 import com.fphoenixcorneae.baseui.ui.basic.TypewriterTextScreen
 import com.fphoenixcorneae.baseui.ui.basic.VerticalDividerScreen
 import com.fphoenixcorneae.baseui.ui.system.KeyboardScreen
+import com.fphoenixcorneae.baseui.ui.system.SystemUiScaffoldScreen
 
 object Router {
     const val Home = "home"
@@ -108,6 +109,10 @@ object Router {
         Keyboard(
             router = "System_Keyboard",
             composable = @Composable { KeyboardScreen() },
+        ),
+        SystemUiScaffold(
+            router = "System_SystemUiScaffold",
+            composable = @Composable { SystemUiScaffoldScreen() },
         ),
         ;
 

@@ -31,7 +31,12 @@ fun GradientButton(
     modifier: Modifier = Modifier,
     text: String,
     textStyle: TextStyle = TextStyle.Default,
-    gradientBrush: Brush,
+    gradientBrush: Brush = Brush.linearGradient(
+        listOf(
+            Color(0xFF4185F2),
+            Color(0xFF3362F7)
+        )
+    ),
     shape: Shape = ButtonDefaults.shape,
     onClick: () -> Unit = { },
 ) {
