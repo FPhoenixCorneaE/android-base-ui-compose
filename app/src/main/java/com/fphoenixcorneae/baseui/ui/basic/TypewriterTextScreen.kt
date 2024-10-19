@@ -1,17 +1,29 @@
 package com.fphoenixcorneae.baseui.ui.basic
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.fphoenixcorneae.baseui.TypewriterText
 
 @Preview
 @Composable
 fun TypewriterTextScreen() {
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 80.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         TypewriterText(
             animatedText = "蜀 道 难\n" +
                     "\u200B唐·李白\n" +
@@ -20,5 +32,10 @@ fun TypewriterTextScreen() {
                     "剑阁峥嵘而崔嵬（wéi），一夫当关，万夫莫开。所守或匪（fěi）亲，化为狼与豺。朝避猛虎，夕避长蛇；磨牙吮（shǔn）血（xuè），杀人如麻。锦城虽云乐，不如早还（huán）家。蜀道之难，难于上青天，侧身西望长咨嗟（zī jiē）！",
             typingInterval = 10,
         )
+    }
+    Column(modifier = Modifier.padding(25.dp)) {
+        Text("TypewriterText", color = Color.Black.copy(0.8f), fontSize = 20.sp)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text("打字机文本", color = Color.Black.copy(0.55f), fontSize = 14.sp)
     }
 }

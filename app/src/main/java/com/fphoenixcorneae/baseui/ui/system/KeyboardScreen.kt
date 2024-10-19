@@ -4,8 +4,10 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,9 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.fphoenixcorneae.baseui.BasicNumberKeyboard
 import com.fphoenixcorneae.baseui.IdCardNumberKeyboard
 import com.fphoenixcorneae.baseui.KeyboardKeyType
@@ -168,5 +172,10 @@ fun KeyboardScreen() {
                 }
             }
         }
+    }
+    Column(modifier = Modifier.padding(25.dp)) {
+        Text("NumberKeyboard", color = Color.Black.copy(0.8f), fontSize = 20.sp)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text("数字键盘", color = Color.Black.copy(0.55f), fontSize = 14.sp)
     }
 }

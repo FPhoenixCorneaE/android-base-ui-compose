@@ -6,13 +6,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.fphoenixcorneae.baseui.Star
 
 @Preview
@@ -55,5 +58,10 @@ fun StarScreen() {
                 filledFraction = 0.5f
             )
         }
+    }
+    Column(modifier = Modifier.padding(25.dp)) {
+        Text("Star", color = Color.Black.copy(0.8f), fontSize = 20.sp)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text("星形", color = Color.Black.copy(0.55f), fontSize = 14.sp)
     }
 }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -36,7 +37,8 @@ fun SystemUiScaffoldScreen() {
     var statusBarColor by remember { mutableStateOf(Color.Transparent) }
     var navigationBarColor by remember { mutableStateOf(Color.Transparent) }
     SystemUiScaffold(
-        modifier = Modifier.background(Color(0xfff5f5f5)),
+        modifier = Modifier
+            .background(Color(0xfff5f5f5)),
         isFitsSystemWindows = isFitsSystemWindows,
         statusBarsPadding = statusBarsPadding,
         navigationBarsPadding = navigationBarsPadding,
@@ -46,7 +48,8 @@ fun SystemUiScaffoldScreen() {
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(top = 80.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Row(
@@ -145,6 +148,11 @@ fun SystemUiScaffoldScreen() {
                     navigationBarColor = randomColor
                 }
             }
+        }
+        Column(modifier = Modifier.padding(25.dp)) {
+            Text("SystemUiScaffold", color = Color.Black.copy(0.8f), fontSize = 20.sp)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text("系统ui脚手架", color = Color.Black.copy(0.55f), fontSize = 14.sp)
         }
     }
 }

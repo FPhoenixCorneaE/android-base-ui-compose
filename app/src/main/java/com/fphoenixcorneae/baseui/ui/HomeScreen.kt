@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fphoenixcorneae.baseui.R
+import com.fphoenixcorneae.baseui.SystemUiScaffold
 import com.fphoenixcorneae.baseui.ext.clickableNoRipple
 import com.fphoenixcorneae.baseui.model.HomeMenuData
 import com.fphoenixcorneae.baseui.model.MenuGroup
@@ -44,20 +45,22 @@ import com.fphoenixcorneae.baseui.nav.NavController
 fun HomeScreen() {
     var current by rememberSaveable { mutableStateOf<Int?>(null) }
 
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xfff5f5f5))
-            .statusBarsPadding()
-            .padding(horizontal = 16.dp, vertical = 20.dp)
-    ) {
-        itemsIndexed(HomeMenuData.groups) { index, group ->
-            HomeMenuGroupItem(
-                group = group,
-                isExpanded = index == current,
-            ) {
-                current = if (current == index) null else index
+    SystemUiScaffold(statusBarColor = Color(0xfff5f5f5)) {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xfff5f5f5))
+                .statusBarsPadding()
+                .padding(horizontal = 16.dp, vertical = 20.dp)
+        ) {
+            itemsIndexed(HomeMenuData.groups) { index, group ->
+                HomeMenuGroupItem(
+                    group = group,
+                    isExpanded = index == current,
+                ) {
+                    current = if (current == index) null else index
+                }
             }
         }
     }

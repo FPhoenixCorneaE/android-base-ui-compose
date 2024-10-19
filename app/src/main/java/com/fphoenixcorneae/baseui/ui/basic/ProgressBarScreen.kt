@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,8 +33,11 @@ import com.fphoenixcorneae.baseui.progressbar.VerticalProgressBar
 fun ProgressBarScreen() {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .verticalScroll(rememberScrollState())
+            .padding(20.dp)
+            .padding(top = 80.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -231,5 +237,10 @@ fun ProgressBarScreen() {
                 clockwise = false,
             )
         }
+    }
+    Column(modifier = Modifier.padding(25.dp)) {
+        Text("ProgressBar", color = Color.Black.copy(0.8f), fontSize = 20.sp)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text("进度条", color = Color.Black.copy(0.55f), fontSize = 14.sp)
     }
 }
