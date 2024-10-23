@@ -27,13 +27,17 @@ fun TriangleScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Triangle(width = 60.dp, height = 40.dp, color = Color.Blue, cornerRadius = 20f)
+        Triangle(width = 60.dp, height = 40.dp, color = Color.Black)
+        Spacer(modifier = Modifier.height(8.dp))
+        Triangle(width = 60.dp, height = 40.dp, color = Color.Gray, cornerRadius = 8.dp)
+        Spacer(modifier = Modifier.height(8.dp))
+        Triangle(width = 60.dp, height = 40.dp, color = Color.Blue, cornerRadius = 20.dp)
         Spacer(modifier = Modifier.height(8.dp))
         Triangle(
             width = 60.dp,
             height = 40.dp,
             color = Color.Red,
-            cornerRadius = 20f,
+            cornerRadius = 20.dp,
             rotateDegree = 180f
         )
     }

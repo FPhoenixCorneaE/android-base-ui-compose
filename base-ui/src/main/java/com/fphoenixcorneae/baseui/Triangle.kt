@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -31,9 +32,10 @@ fun Triangle(
     color: Color = Color.Black,
     width: Dp = 3.dp,
     height: Dp = 2.dp,
-    cornerRadius: Float? = null,
+    cornerRadius: Dp = 0.dp,
     rotateDegree: Float = 0f,
 ) {
+    val density = LocalDensity.current
     Canvas(
         modifier = Modifier
             .then(other = modifier)
@@ -54,7 +56,7 @@ fun Triangle(
                 outline = Outline.Generic(trianglePath),
                 paint = Paint().apply {
                     this.color = color
-                    pathEffect = PathEffect.cornerPathEffect(cornerRadius ?: (rect.minDimension / 3))
+                    pathEffect = PathEffect.cornerPathEffect(density.run { cornerRadius.toPx() })
                 }
             )
         }
@@ -68,7 +70,13 @@ fun Path.lineTo(offset: Offset) = lineTo(offset.x, offset.y)
 @Composable
 fun PreviewTriangle() {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Triangle(width = 30.dp, height = 20.dp, color = Color.Black, cornerRadius = 0f)
-        Triangle(width = 30.dp, height = 20.dp, color = Color.White, cornerRadius = 0f, rotateDegree = 180f)
+        Triangle(width = 30.dp, height = 20.dp, color = Color.Black, cornerRadius = 0.dp)
+        Triangle(
+            width = 30.dp,
+            height = 20.dp,
+            color = Color.White,
+            cornerRadius = 4.dp,
+            rotateDegree = 180f
+        )
     }
 }

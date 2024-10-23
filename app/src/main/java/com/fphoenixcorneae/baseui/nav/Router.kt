@@ -8,6 +8,7 @@ import com.fphoenixcorneae.baseui.ui.advanced.PieChartScreen
 import com.fphoenixcorneae.baseui.ui.advanced.RandomlyRollBallLayoutScreen
 import com.fphoenixcorneae.baseui.ui.advanced.RockerScreen
 import com.fphoenixcorneae.baseui.ui.advanced.ShadowScreen
+import com.fphoenixcorneae.baseui.ui.advanced.SwiperScreen
 import com.fphoenixcorneae.baseui.ui.basic.AuthCodeTextFieldScreen
 import com.fphoenixcorneae.baseui.ui.basic.EditTextScreen
 import com.fphoenixcorneae.baseui.ui.basic.GradientButtonScreen
@@ -158,6 +159,10 @@ object Router {
         MarqueeAperture(
             router = "Advanced_MarqueeAperture",
             composable = @Composable { MarqueeApertureScreen() },
+        ),
+        Swiper(
+            router = "Advanced_Swiper",
+            composable = @Composable { SwiperScreen() },
         ),
         ;
 
