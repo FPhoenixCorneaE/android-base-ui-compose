@@ -1,5 +1,6 @@
 package com.fphoenixcorneae.baseui.ui.basic
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,16 +25,16 @@ import com.fphoenixcorneae.baseui.GradientButton
 @Preview
 @Composable
 fun GradientButtonScreen() {
-    Box(
+    Column (
         modifier = Modifier
             .fillMaxSize()
             .padding(20.dp),
-        contentAlignment = Alignment.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         GradientButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(40.dp),
+                .height(30.dp),
             text = "Gradient Button",
             textStyle = TextStyle(
                 color = Color.White,
@@ -46,7 +47,26 @@ fun GradientButtonScreen() {
                     Color(0xFF3362F7)
                 )
             ),
-            shape = RoundedCornerShape(25.dp),
+        )
+        Spacer(Modifier.height(16.dp))
+        GradientButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(30.dp),
+            text = "禁用状态",
+            textStyle = TextStyle(
+                color = Color.White,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.W500
+            ),
+            gradientBrush = Brush.linearGradient(
+                listOf(
+                    Color(0xFF4185F2),
+                    Color(0xFF3362F7)
+                )
+            ),
+            shape = RoundedCornerShape(6.dp),
+            enabled = false,
         )
     }
     Column(modifier = Modifier.padding(25.dp)) {
