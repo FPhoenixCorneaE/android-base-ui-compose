@@ -22,6 +22,10 @@ dependencies {
 
 ### 更新日志
 
+#### 2024-10-23
+
+* feat: 添加滑动操作组件[Swiper](https://github.com/FPhoenixCorneaE/android-base-ui-compose/blob/main/base-ui/src/main/java/com/fphoenixcorneae/baseui/Swiper.kt)
+
 #### 2024-02-18
 
 * feat: 添加自定义拖动条[CustomSeekbar](https://github.com/FPhoenixCorneaE/android-base-ui-compose/blob/main/base-ui/src/main/java/com/fphoenixcorneae/baseui/CustomSeekbar.kt)
