@@ -2,6 +2,7 @@ package com.fphoenixcorneae.baseui.nav
 
 import androidx.compose.runtime.Composable
 import com.fphoenixcorneae.baseui.model.MenuItem
+import com.fphoenixcorneae.baseui.ui.advanced.CarouselScreen
 import com.fphoenixcorneae.baseui.ui.advanced.GlowCircleScreen
 import com.fphoenixcorneae.baseui.ui.advanced.MarqueeApertureScreen
 import com.fphoenixcorneae.baseui.ui.advanced.PieChartScreen
@@ -163,6 +164,10 @@ object Router {
         Swiper(
             router = "Advanced_Swiper",
             composable = @Composable { SwiperScreen() },
+        ),
+        Carousel(
+            router = "Advanced_Carousel",
+            composable = @Composable { CarouselScreen() },
         ),
         ;
 
