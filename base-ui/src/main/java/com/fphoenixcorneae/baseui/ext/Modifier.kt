@@ -12,11 +12,13 @@ import androidx.compose.ui.composed
  */
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 inline fun Modifier.clickableNoRipple(
+    enabled: Boolean = true,
     crossinline onClick: () -> Unit,
 ): Modifier = composed {
     clickable(
         indication = null,
         interactionSource = remember { MutableInteractionSource() },
+        enabled = enabled,
     ) {
         onClick()
     }

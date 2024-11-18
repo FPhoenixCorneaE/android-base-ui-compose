@@ -11,6 +11,7 @@ import com.fphoenixcorneae.baseui.ui.advanced.RockerScreen
 import com.fphoenixcorneae.baseui.ui.advanced.ShadowScreen
 import com.fphoenixcorneae.baseui.ui.advanced.SwiperScreen
 import com.fphoenixcorneae.baseui.ui.basic.AuthCodeTextFieldScreen
+import com.fphoenixcorneae.baseui.ui.basic.CheckBoxScreen
 import com.fphoenixcorneae.baseui.ui.basic.EditTextScreen
 import com.fphoenixcorneae.baseui.ui.basic.GradientButtonScreen
 import com.fphoenixcorneae.baseui.ui.basic.HeartScreen
@@ -86,6 +87,10 @@ object Router {
         Square(
             router = "Basic_Square",
             composable = @Composable { SquareScreen() }
+        ),
+        CheckBox(
+            router = "Basic_CheckBox",
+            composable = @Composable { CheckBoxScreen() }
         ),
         ;
 
