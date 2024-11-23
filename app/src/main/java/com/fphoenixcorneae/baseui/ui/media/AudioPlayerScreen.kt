@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PauseCircleOutline
 import androidx.compose.material.icons.rounded.PlayCircleOutline
@@ -31,12 +32,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.fphoenixcorneae.baseui.CustomSeekbar
 import com.fphoenixcorneae.baseui.GradientButton
 import com.fphoenixcorneae.baseui.R
+import com.fphoenixcorneae.baseui.Seekbar
 import com.fphoenixcorneae.baseui.ext.clickableNoRipple
 import com.fphoenixcorneae.baseui.ext.format
 import com.fphoenixcorneae.baseui.media.audio.rememberAudioPlayerState
+import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.milliseconds
 
 @Preview
@@ -51,7 +53,8 @@ fun AudioPlayerScreen() {
     ) {
         val context = LocalContext.current
         val uri = Uri.parse("android.resource://${context.packageName}/${R.raw.audio_luo_tangbohu}")
-        val uri2 = Uri.parse("android.resource://${context.packageName}/${R.raw.audio_shipmenttovietnam_loveblowswiththewind}")
+        val uri2 =
+            Uri.parse("android.resource://${context.packageName}/${R.raw.audio_shipmenttovietnam_loveblowswiththewind}")
 //        val path = "https://music.163.com/song/media/outer/url?id=2026224214"
         // 网易云音乐外链地址可使用上面的地址在浏览器中打开获取（因为一段时间后会失效），更换音乐只需更换id即可
 //        val path =
@@ -91,7 +94,30 @@ fun AudioPlayerScreen() {
                     },
                 tint = Color.White,
             )
-            CustomSeekbar()
+            Spacer(Modifier.width(4.dp))
+            Text(
+                text = audioPlayerState?.currentPosition?.milliseconds.format(isFull = false),
+                color = Color(0xff333333),
+                fontSize = 12.sp,
+            )
+            Seekbar(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .weight(1f),
+                progress = audioPlayerState?.currentPosition?.toFloat() ?: 0f,
+                progressRange = 0f..(audioPlayerState?.totalDuration?.toFloat() ?: 0f),
+                showProgressText = false,
+                thumbSize = 20.dp,
+            ) { progress: Float, fromUser: Boolean ->
+                if (fromUser) {
+                    audioPlayerState?.seekTo(progress.roundToInt())
+                }
+            }
+            Text(
+                text = audioPlayerState?.totalDuration?.milliseconds.format(isFull = false),
+                color = Color(0xff333333),
+                fontSize = 12.sp,
+            )
         }
         Spacer(modifier = Modifier.height(16.dp))
         GradientButton(

@@ -1,7 +1,9 @@
 package com.fphoenixcorneae.baseui.ui.basic
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,18 +22,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.fphoenixcorneae.baseui.CustomSeekbar
 import com.fphoenixcorneae.baseui.R
+import com.fphoenixcorneae.baseui.Seekbar
 
 @Preview
 @Composable
 fun SeekbarScreen() {
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color(0xfff5f5f5))
             .padding(20.dp),
-        contentAlignment = Alignment.Center,
+        verticalArrangement = Arrangement.Center,
     ) {
         Box(
             modifier = Modifier
@@ -54,11 +56,37 @@ fun SeekbarScreen() {
                     .size(35.dp)
                     .align(Alignment.CenterEnd)
             )
-            CustomSeekbar(
+            Seekbar(
                 modifier = Modifier
                     .padding(horizontal = 70.dp)
                     .align(Alignment.CenterStart)
-            )
+            ) { progress: Float, fromUser: Boolean ->
+                Log.d("Seekbar", "SeekbarScreen: onProgressChanged: $progress, $fromUser")
+            }
+        }
+        Spacer(modifier = Modifier.height(50.dp))
+        Seekbar(
+            progress = 20f,
+            progressRange = -100f..100f
+        ) { progress: Float, fromUser: Boolean ->
+            Log.d("Seekbar", "SeekbarScreen: onProgressChanged: $progress, $fromUser")
+        }
+        Spacer(modifier = Modifier.height(50.dp))
+        Seekbar(
+            progress = 20f,
+            showProgressText = false,
+            thumbSize = 20.dp
+        ) { progress: Float, fromUser: Boolean ->
+            Log.d("Seekbar", "SeekbarScreen: onProgressChanged: $progress, $fromUser")
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        Text("不可操作", color = Color.Black, fontSize = 16.sp)
+        Spacer(modifier = Modifier.height(50.dp))
+        Seekbar(
+            progress = 20f,
+            enabled = false
+        ) { progress: Float, fromUser: Boolean ->
+            Log.d("Seekbar", "SeekbarScreen: onProgressChanged: $progress, $fromUser")
         }
     }
     Column(modifier = Modifier.padding(25.dp)) {

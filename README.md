@@ -36,7 +36,7 @@ dependencies {
 
 #### 2024-02-18
 
-* feat: 添加自定义拖动条[CustomSeekbar](https://github.com/FPhoenixCorneaE/android-base-ui-compose/blob/main/base-ui/src/main/java/com/fphoenixcorneae/baseui/CustomSeekbar.kt)
+* feat: 添加自定义拖动条[Seekbar](https://github.com/FPhoenixCorneaE/android-base-ui-compose/blob/main/base-ui/src/main/java/com/fphoenixcorneae/baseui/Seekbar.kt)
 * feat: 添加自定义摇杆器[Rocker](https://github.com/FPhoenixCorneaE/android-base-ui-compose/blob/main/base-ui/src/main/java/com/fphoenixcorneae/baseui/Rocker.kt)
 
 #### 2024-02-05
