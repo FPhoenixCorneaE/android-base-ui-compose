@@ -25,11 +25,12 @@ import com.fphoenixcorneae.baseui.ui.basic.TabRowScreen
 import com.fphoenixcorneae.baseui.ui.basic.TriangleScreen
 import com.fphoenixcorneae.baseui.ui.basic.TypewriterTextScreen
 import com.fphoenixcorneae.baseui.ui.basic.VerticalDividerScreen
+import com.fphoenixcorneae.baseui.ui.media.AudioPlayerScreen
 import com.fphoenixcorneae.baseui.ui.system.KeyboardScreen
 import com.fphoenixcorneae.baseui.ui.system.SystemUiScaffoldScreen
 
 object Router {
-    const val Home = "home"
+    const val HOME = "home"
 
     enum class Basic(val router: String, val composable: @Composable () -> Unit) {
         EditText(
@@ -104,6 +105,31 @@ object Router {
         companion object {
             /** 创建一个映射，将枚举成员名称映射到 Composable 函数 */
             private val mapping = entries.associateBy(Basic::name)
+
+            fun toMenus(): List<MenuItem> =
+                entries.flatMap {
+                    listOf(MenuItem(name = it.name, router = it.router))
+                }
+        }
+    }
+
+    enum class Media(val router: String, val composable: @Composable () -> Unit) {
+        AudioPlayer(
+            router = "Media_AudioPlayer",
+            composable = @Composable { AudioPlayerScreen() },
+        ),
+        ;
+
+        /**
+         * 根据名称获取 Composable 函数
+         */
+        @Composable
+        fun getComposable(): @Composable (() -> Unit)? =
+            mapping[name]?.composable
+
+        companion object {
+            /** 创建一个映射，将枚举成员名称映射到 Composable 函数 */
+            private val mapping = entries.associateBy(Media::name)
 
             fun toMenus(): List<MenuItem> =
                 entries.flatMap {

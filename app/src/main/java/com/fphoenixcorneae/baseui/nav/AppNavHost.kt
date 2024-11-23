@@ -13,7 +13,7 @@ import com.fphoenixcorneae.baseui.ui.HomeScreen
 fun AppNavHost() {
     NavHost(
         navController = NavController.get(currentComposer),
-        startDestination = Router.Home,
+        startDestination = Router.HOME,
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -39,10 +39,11 @@ fun AppNavHost() {
             )
         }
     ) {
-        composable(Router.Home) {
+        composable(Router.HOME) {
             HomeScreen()
         }
         addBasicComponentGraph()
+        addMediaComponentGraph()
         addSystemComponentGraph()
         addAdvancedComponentGraph()
     }
@@ -50,6 +51,15 @@ fun AppNavHost() {
 
 private fun NavGraphBuilder.addBasicComponentGraph() {
     Router.Basic.entries.forEach { enum ->
+        composable(enum.router) {
+            val composableFunc = enum.getComposable()
+            composableFunc?.invoke()
+        }
+    }
+}
+
+private fun NavGraphBuilder.addMediaComponentGraph() {
+    Router.Media.entries.forEach { enum ->
         composable(enum.router) {
             val composableFunc = enum.getComposable()
             composableFunc?.invoke()

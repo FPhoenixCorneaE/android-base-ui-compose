@@ -34,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Paint
@@ -53,6 +52,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fphoenixcorneae.baseui.ext.clickableNoRipple
 
+/**
+ * 自定义复选框
+ * @param modifier              修饰符
+ * @param checked               是否勾选
+ * @param boxSize               勾选框大小
+ * @param boxShape              勾选框形状
+ * @param boxPadding            勾选框内边距
+ * @param boxSpace              勾选框与文字的间隔
+ * @param boxGravity            勾选框重力：Gravity.START or Gravity.END
+ * @param enabled               是否可用
+ * @param colors                复选框颜色[CheckboxColors]
+ * @param text                  文字
+ * @param textStyle             文字样式
+ * @param verticalAlignment     垂直对齐方式
+ * @param horizontalArrangement 水平对齐方式
+ * @param onCheckedChange       勾选更改回调
+ */
 @Composable
 fun CheckBox(
     modifier: Modifier = Modifier,
@@ -81,11 +97,13 @@ fun CheckBox(
         animationSpec = tween(200, easing = LinearEasing),
         label = "tickProgress"
     )
+    // 勾选框边框宽度
     val borderWidth by animateDpAsState(
         targetValue = if (isChecked) 0.dp else 1.dp,
         animationSpec = tween(200, easing = LinearEasing),
         label = "borderWidth"
     )
+    // 勾选框背景动画切换
     val boxBackground by animateColorAsState(
         targetValue = if (checked) colors.checkedBoxColor else colors.uncheckedBoxColor,
         animationSpec = tween(200, easing = LinearEasing),
