@@ -22,6 +22,10 @@ dependencies {
 
 ### 更新日志
 
+#### 2024-11-18
+
+* feat: 添加自定义复选框[CheckBox](https://github.com/FPhoenixCorneaE/android-base-ui-compose/blob/main/base-ui/src/main/java/com/fphoenixcorneae/baseui/CheckBox.kt)
+
 #### 2024-11-02
 
 * feat: 添加旋转木马[Carousel](https://github.com/FPhoenixCorneaE/android-base-ui-compose/blob/main/base-ui/src/main/java/com/fphoenixcorneae/baseui/carousel/Carousel.kt)
