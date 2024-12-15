@@ -17,11 +17,7 @@ fun rememberAudioPlayerState(source: Any): IAudioPlayer {
     val coroutineScope = rememberCoroutineScope()
     val player = remember { MediaPlayer() }
     val state = remember {
-        AudioPlayerImpl(
-            context = context,
-            coroutineScope = coroutineScope,
-            player = player
-        )
+        AudioPlayerImpl(context = context, coroutineScope = coroutineScope, player = player)
     }
     LaunchedEffect(source) {
         when (source) {
