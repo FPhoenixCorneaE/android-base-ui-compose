@@ -26,6 +26,7 @@ import com.fphoenixcorneae.baseui.ui.basic.TriangleScreen
 import com.fphoenixcorneae.baseui.ui.basic.TypewriterTextScreen
 import com.fphoenixcorneae.baseui.ui.basic.VerticalDividerScreen
 import com.fphoenixcorneae.baseui.ui.media.AudioPlayerScreen
+import com.fphoenixcorneae.baseui.ui.media.VideoPlayerScreen
 import com.fphoenixcorneae.baseui.ui.system.KeyboardScreen
 import com.fphoenixcorneae.baseui.ui.system.SystemUiScaffoldScreen
 
@@ -117,6 +118,10 @@ object Router {
         AudioPlayer(
             router = "Media_AudioPlayer",
             composable = @Composable { AudioPlayerScreen() },
+        ),
+        VideoPlayer(
+            router = "Media_VideoPlayer",
+            composable = @Composable { VideoPlayerScreen() },
         ),
         ;
 

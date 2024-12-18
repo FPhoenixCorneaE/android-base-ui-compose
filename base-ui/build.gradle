@@ -6,11 +6,11 @@ plugins {
 
 android {
     namespace 'com.fphoenixcorneae.baseui'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         minSdk 24
-        targetSdk 34
+        targetSdk 35
         vectorDrawables {
             useSupportLibrary true
         }
@@ -59,8 +59,19 @@ dependencies {
     // coil
     implementation("io.coil-kt:coil-compose:2.7.0")
 
-    // A snapping fling behavior for Jetpack Compose
+    // a snapping fling behavior for Jetpack Compose
     implementation "dev.chrisbanes.snapper:snapper:0.3.0"
+
+    // media3
+    def media3_version = "1.5.0"
+    // For media playback using ExoPlayer
+    api "androidx.media3:media3-exoplayer:$media3_version"
+    // For DASH playback support with ExoPlayer
+    api "androidx.media3:media3-exoplayer-dash:$media3_version"
+    // For building media playback UIs
+    api "androidx.media3:media3-ui:$media3_version"
+    // For exposing and controlling media sessions
+    api "androidx.media3:media3-session:$media3_version"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
