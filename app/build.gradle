@@ -9,7 +9,7 @@ android {
     compileSdk 35
 
     defaultConfig {
-        applicationId "com.fphoenixcorneae.baseui"
+        applicationId "com.fphoenixcorneae.baseui.compose"
         minSdk 24
         targetSdk 35
         versionCode 1
