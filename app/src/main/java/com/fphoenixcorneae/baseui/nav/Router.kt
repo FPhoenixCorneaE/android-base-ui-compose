@@ -11,6 +11,7 @@ import com.fphoenixcorneae.baseui.ui.advanced.RockerScreen
 import com.fphoenixcorneae.baseui.ui.advanced.ShadowScreen
 import com.fphoenixcorneae.baseui.ui.advanced.SwiperScreen
 import com.fphoenixcorneae.baseui.ui.basic.AuthCodeTextFieldScreen
+import com.fphoenixcorneae.baseui.ui.basic.AutoSizeTextScreen
 import com.fphoenixcorneae.baseui.ui.basic.CheckBoxScreen
 import com.fphoenixcorneae.baseui.ui.basic.EditTextScreen
 import com.fphoenixcorneae.baseui.ui.basic.GradientButtonScreen
@@ -37,6 +38,10 @@ object Router {
         EditText(
             router = "Basic_EditText",
             composable = @Composable { EditTextScreen() },
+        ),
+        AutoSizeText(
+            router = "Basic_AutoSizeText",
+            composable = @Composable { AutoSizeTextScreen() },
         ),
         TypewriterText(
             router = "Basic_TypewriterText",

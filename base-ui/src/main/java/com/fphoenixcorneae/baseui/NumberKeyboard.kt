@@ -1,5 +1,6 @@
 package com.fphoenixcorneae.baseui
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -57,6 +58,7 @@ import java.util.Collections
  * @param verticalSpace   垂直间隙
  * @param aspectRatio     长宽比
  */
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Preview
 @Composable
 fun BasicNumberKeyboard(
@@ -182,6 +184,7 @@ fun BasicNumberKeyboard(
  * @param verticalSpace   垂直间隙
  * @param aspectRatio     长宽比
  */
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Preview
 @Composable
 fun RandomNumberKeyboard(
@@ -313,6 +316,7 @@ fun RandomNumberKeyboard(
  * @param verticalSpace   垂直间隙
  * @param aspectRatio     长宽比
  */
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Preview
 @Composable
 fun IdCardNumberKeyboard(
@@ -456,6 +460,7 @@ fun IdCardNumberKeyboard(
  * @param verticalSpace   垂直间隙
  * @param aspectRatio     长宽比
  */
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Preview
 @Composable
 fun TitleNumberKeyboard(
@@ -614,6 +619,7 @@ fun TitleNumberKeyboard(
  * @param verticalSpace   垂直间隙
  * @param aspectRatio     长宽比
  */
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Preview
 @Composable
 fun SidebarNumberKeyboard(
@@ -807,6 +813,7 @@ fun SidebarNumberKeyboard(
  * @param verticalSpace   垂直间隙
  * @param aspectRatio     长宽比
  */
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Preview
 @Composable
 fun NumberKeyboardWithKeys(

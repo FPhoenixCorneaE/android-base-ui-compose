@@ -51,7 +51,7 @@ import kotlin.math.sin
  * @param onRightPressed         按压下箭头
  * @param onSteeringWheelChanged 方向盘变化监听
  */
-@SuppressLint("ReturnFromAwaitPointerEventScope")
+@SuppressLint("UnusedBoxWithConstraintsScope", "ReturnFromAwaitPointerEventScope")
 @Composable
 fun Rocker(
     modifier: Modifier = Modifier,
