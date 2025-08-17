@@ -4,6 +4,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.AnchoredDraggableDefaults
 import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.Orientation
@@ -113,7 +114,18 @@ fun Swiper(
                     shape = if (!isLabelStyle) RoundedCornerShape(8.dp) else RectangleShape
                 )
                 .padding(horizontal = 16.dp)
-                .anchoredDraggable(state, Orientation.Horizontal, reverseDirection = true),
+                .anchoredDraggable(
+                    state = state,
+                    orientation = Orientation.Horizontal,
+                    reverseDirection = true,
+                    flingBehavior = AnchoredDraggableDefaults.flingBehavior(
+                        state = state,
+                        // 位置阀值：滑动多远距离自动进入该锚点
+                        positionalThreshold = { totalDistance -> totalDistance * 0.5f },
+                        // 切换状态的动画
+                        animationSpec = tween()
+                    )
+                ),
             contentAlignment = Alignment.CenterStart
         ) {
             content()
@@ -235,19 +247,13 @@ fun rememberSwiperState(
     val state = remember {
         AnchoredDraggableState(
             // 初始状态
-            initialValue,
+            initialValue = initialValue,
             // 设置每个锚点对应的位置（偏移量）
             anchors = DraggableAnchors {
                 DragAnchor.Start at -startActionWidthPx
                 DragAnchor.Center at 0f
                 DragAnchor.End at endActionWidthPx
-            },
-            // 位置阀值：滑动多远距离自动进入该锚点
-            positionalThreshold = { totalDistance -> totalDistance * 0.5f },
-            // 速度阀值：即使没有超过位置阀值，一秒钟滑动多少个像素也能自动进入下一个锚点
-            velocityThreshold = { density.run { 100.dp.toPx() } },
-            // 切换状态的动画
-            animationSpec = tween()
+            }
         )
     }
 

@@ -12,6 +12,7 @@ import com.fphoenixcorneae.baseui.ui.advanced.ShadowScreen
 import com.fphoenixcorneae.baseui.ui.advanced.SwiperScreen
 import com.fphoenixcorneae.baseui.ui.basic.AuthCodeTextFieldScreen
 import com.fphoenixcorneae.baseui.ui.basic.AutoSizeTextScreen
+import com.fphoenixcorneae.baseui.ui.basic.BadgeScreen
 import com.fphoenixcorneae.baseui.ui.basic.CheckBoxScreen
 import com.fphoenixcorneae.baseui.ui.basic.EditTextScreen
 import com.fphoenixcorneae.baseui.ui.basic.GradientButtonScreen
@@ -98,6 +99,10 @@ object Router {
         CheckBox(
             router = "Basic_CheckBox",
             composable = @Composable { CheckBoxScreen() }
+        ),
+        Badge(
+            router = "Basic_Badge",
+            composable = @Composable { BadgeScreen() }
         ),
         ;
 

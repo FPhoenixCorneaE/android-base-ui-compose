@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -52,7 +53,7 @@ fun GradientButton(
             .background(brush = gradientBrush)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = if (enabled) rememberRipple() else null,
+                indication = if (enabled) ripple() else null,
                 enabled = enabled
             ) {
                 onClick()
